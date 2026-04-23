@@ -1,0 +1,16 @@
+[package]
+name = "crawlds-display"
+description = "Display control: brightness via sysfs backlight, nightlight via redshift/wayland"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+crawlds-ipc  = { workspace = true }
+tokio      = { workspace = true }
+serde      = { workspace = true }
+thiserror  = { workspace = true }
+tracing    = { workspace = true }
+anyhow     = { workspace = true }
+which      = "6"

@@ -1,0 +1,117 @@
+{
+  "version": "1.0",
+  "name": "MacOS",
+  "description": "A macOS layout",
+  "timestamp": "2026-01-21T02:16:56.947Z",
+  "topBar": {
+    "visible": true,
+    "position": "top",
+    "float": false,
+    "roundedCorners": false,
+    "cornerRadius": 12,
+    "iconSize": 24,
+    "iconSpacing": 2,
+    "widgets": {
+      "left": [
+        "launcherButton"
+      ],
+      "center": [
+        "workspaceSwitcher"
+      ],
+      "right": [
+        {
+          "id": "systemTray",
+          "enabled": true
+        },
+        {
+          "id": "weather",
+          "enabled": true
+        },
+        {
+          "id": "clock",
+          "enabled": true
+        },
+        {
+          "id": "notificationButton",
+          "enabled": true
+        },
+        {
+          "id": "controlCenterButton",
+          "enabled": true
+        },
+        {
+          "id": "systemUpdate",
+          "enabled": true
+        }
+      ]
+    }
+  },
+  "dock": {
+    "visible": true,
+    "widgetsEnabled": true,
+    "position": "bottom",
+    "expandToScreen": false,
+    "iconSize": 40,
+    "iconSpacing": 3,
+    "pinnedAppsIconSize": 40,
+    "pinnedAppsIconSpacing": 3,
+    "widgets": {
+      "left": [],
+      "center": [
+        {
+          "id": "launchpad",
+          "enabled": true
+        },
+        {
+          "id": "pinnedApps",
+          "enabled": true
+        },
+        {
+          "id": "trash",
+          "enabled": true
+        }
+      ],
+      "right": []
+    }
+  },
+  "taskBar": {
+    "visible": false,
+    "float": false,
+    "roundedCorners": false,
+    "cornerRadius": 32,
+    "iconSize": 30,
+    "iconSpacing": 2,
+    "widgets": {
+      "left": [
+        {
+          "id": "launcherButton",
+          "enabled": true
+        },
+        {
+          "id": "workspaceSwitcher",
+          "enabled": true
+        }
+      ],
+      "center": [
+        {
+          "id": "pinnedApps",
+          "enabled": true
+        },
+        {
+          "id": "separator",
+          "enabled": true
+        }
+      ],
+      "right": [
+        "systemTray",
+        "weather",
+        "clock",
+        "controlCenterButton",
+        "systemUpdate"
+      ]
+    }
+  },
+  "global": {
+    "cornerRadius": 32
+  }
+}

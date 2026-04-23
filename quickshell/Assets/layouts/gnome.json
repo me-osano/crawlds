@@ -1,0 +1,190 @@
+{
+  "version": "1.0",
+  "name": "Gnome",
+  "description": "",
+  "timestamp": "2026-03-06T00:28:46.959Z",
+  "topBar": {
+    "visible": true,
+    "position": "top",
+    "float": false,
+    "roundedCorners": false,
+    "cornerRadius": 12,
+    "autoFitRoundedCorners": false,
+    "autoFitCornerRadius": 12,
+    "height": 40,
+    "leftMargin": 0,
+    "rightMargin": 0,
+    "topMargin": 0,
+    "transparency": 0.75,
+    "widgetTransparency": 0.85,
+    "iconSize": 24,
+    "iconSpacing": 2,
+    "spacing": 4,
+    "innerPadding": 8,
+    "bottomGap": 0,
+    "autoHide": false,
+    "autoFit": false,
+    "openOnOverview": false,
+    "squareCorners": false,
+    "noBackground": false,
+    "gothCornersEnabled": false,
+    "borderEnabled": false,
+    "borderWidth": 2,
+    "borderRadius": 8,
+    "borderRed": 0,
+    "borderGreen": 0,
+    "borderBlue": 0,
+    "borderAlpha": 1,
+    "dynamicBorderColors": false,
+    "borderTop": true,
+    "borderLeft": true,
+    "borderRight": true,
+    "borderBottom": true,
+    "borderBottomLeftInset": 1,
+    "borderBottomRightInset": 1,
+    "widgets": {
+      "left": [
+        {
+          "id": "workspaceSwitcher",
+          "enabled": true
+        }
+      ],
+      "center": [
+        {
+          "id": "clock",
+          "enabled": true
+        }
+      ],
+      "right": [
+        {
+          "id": "systemTray",
+          "enabled": true
+        },
+        {
+          "id": "notificationButton",
+          "enabled": true
+        },
+        {
+          "id": "controlCenterButton",
+          "enabled": true
+        }
+      ]
+    }
+  },
+  "dock": {
+    "visible": true,
+    "widgetsEnabled": true,
+    "position": "bottom",
+    "expandToScreen": false,
+    "scale": 0.83,
+    "iconSize": 48,
+    "iconSpacing": 2,
+    "pinnedAppsIconSize": 40,
+    "pinnedAppsIconSpacing": 2,
+    "pinnedAppsPillEnabled": false,
+    "borderEnabled": true,
+    "borderWidth": 3,
+    "borderRadius": 50,
+    "borderRed": 0.7333333333333333,
+    "borderGreen": 0.7137254901960784,
+    "borderBlue": 1,
+    "borderAlpha": 0.9,
+    "dynamicBorderColors": false,
+    "widgets": {
+      "left": [],
+      "center": [
+        {
+          "id": "launchpad",
+          "enabled": true
+        },
+        {
+          "id": "pinnedApps",
+          "enabled": true
+        },
+        {
+          "id": "trash",
+          "enabled": true
+        }
+      ],
+      "right": []
+    }
+  },
+  "taskBar": {
+    "visible": false,
+    "float": false,
+    "roundedCorners": false,
+    "cornerRadius": 32,
+    "groupApps": true,
+    "height": 54,
+    "bottomMargin": 3,
+    "exclusiveZone": 56,
+    "transparency": 0.5,
+    "iconSize": 30,
+    "iconSpacing": 2,
+    "leftPadding": 0,
+    "rightPadding": 0,
+    "topPadding": 0,
+    "bottomPadding": 0,
+    "autoHide": true,
+    "pinnedAppsPosition": "left",
+    "borderEnabled": false,
+    "borderWidth": 2,
+    "borderRadius": 8,
+    "borderRed": 0,
+    "borderGreen": 0,
+    "borderBlue": 0,
+    "borderAlpha": 1,
+    "dynamicBorderColors": false,
+    "borderTop": true,
+    "borderLeft": true,
+    "borderRight": true,
+    "borderBottom": true,
+    "borderBottomLeftInset": 1,
+    "borderBottomRightInset": 1,
+    "widgets": {
+      "left": [
+        {
+          "id": "launcherButton",
+          "enabled": true
+        },
+        {
+          "id": "workspaceSwitcher",
+          "enabled": true
+        }
+      ],
+      "center": [
+        {
+          "id": "pinnedApps",
+          "enabled": true
+        },
+        {
+          "id": "separator",
+          "enabled": true
+        }
+      ],
+      "right": [
+        "systemTray",
+        "weather",
+        "clock",
+        "controlCenterButton",
+        "systemUpdate"
+      ]
+    }
+  },
+  "miniPanel": {
+    "visible": false,
+    "autohide": false,
+    "height": 48,
+    "scale": 1,
+    "exclusiveGap": 0,
+    "opacity": 1,
+    "widgets": {
+      "left": [],
+      "center": [],
+      "right": []
+    }
+  },
+  "global": {
+    "cornerRadius": 32
+  }
+}

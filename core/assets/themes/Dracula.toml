@@ -1,0 +1,96 @@
+[metadata]
+name = "Dracula"
+author = "Zeno Rocha"
+isDark = true
+
+[dark]
+primary = "#bd93f9"
+onPrimary = "#282A36"
+secondary = "#ff79c6"
+onSecondary = "#4e1d32"
+tertiary = "#8be9fd"
+onTertiary = "#003543"
+error = "#FF5555"
+onError = "#282A36"
+surface = "#282A36"
+onSurface = "#F8F8F2"
+surfaceVariant = "#44475A"
+onSurfaceVariant = "#d6d8e0"
+outline = "#5a5e77"
+shadow = "#282A36"
+hover = "#8be9fd"
+onHover = "#003543"
+
+[dark.terminal.normal]
+black = "#21222c"
+red = "#ff5555"
+green = "#50fa7b"
+yellow = "#f1fa8c"
+blue = "#bd93f9"
+magenta = "#ff79c6"
+cyan = "#8be9fd"
+white = "#f8f8f2"
+
+[dark.terminal.bright]
+black = "#6272a4"
+red = "#ff6e6e"
+green = "#69ff94"
+yellow = "#ffffa5"
+blue = "#d6acff"
+magenta = "#ff92df"
+cyan = "#a4ffff"
+white = "#ffffff"
+
+[dark.terminal]
+foreground = "#f8f8f2"
+background = "#282a36"
+selectionFg = "#ffffff"
+selectionBg = "#44475a"
+cursorText = "#282a36"
+cursor = "#f8f8f2"
+
+[light]
+mPrimary = "#8332f4"
+mOnPrimary = "#ffffff"
+mSecondary = "#ff1399"
+mOnSecondary = "#ffffff"
+mTertiary = "#0398b9"
+mOnTertiary = "#ffffff"
+mError = "#FF5555"
+mOnError = "#282A36"
+mSurface = "#f8f8f2"
+mOnSurface = "#282a36"
+mSurfaceVariant = "#e6e6ea"
+mOnSurfaceVariant = "#44475a"
+mOutline = "#cacad3"
+mShadow = "#d6d8e0"
+mHover = "#0398b9"
+mOnHover = "#ffffff"
+
+[light.terminal.normal]
+black = "#f8f8f2"
+red = "#ff5555"
+green = "#50fa7b"
+yellow = "#f1fa8c"
+blue = "#bd93f9"
+magenta = "#ff79c6"
+cyan = "#8be9fd"
+white = "#282a36"
+
+[light.terminal.bright]
+black = "#6272a4"
+red = "#ff6e6e"
+green = "#69ff94"
+yellow = "#ffffa5"
+blue = "#d6acff"
+magenta = "#ff92df"
+cyan = "#a4ffff"
+white = "#000000"
+
+[light.terminal]
+foreground = "#282a36"
+background = "#ffffff"
+selectionFg = "#ffffff"
+selectionBg = "#6272a4"
+cursorText = "#ffffff"
+cursor = "#282a36"

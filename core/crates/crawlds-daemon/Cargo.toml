@@ -1,0 +1,39 @@
+[package]
+name = "crawlds-daemon"
+description = "crawlds system daemon — JSON over Unix socket"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "crawlds-daemon"
+path = "src/main.rs"
+
+[dependencies]
+crawlds-ipc        = { workspace = true }
+crawlds-scheduler  = { path = "../crawlds-scheduler" }
+crawlds-bluetooth         = { path = "../crawlds-bluetooth" }
+crawlds-network        = { path = "../crawlds-network" }
+crawlds-notify     = { path = "../crawlds-notify" }
+crawlds-clipboard  = { path = "../crawlds-clipboard" }
+crawlds-sysmon     = { path = "../crawlds-sysmon" }
+crawlds-display = { path = "../crawlds-display" }
+crawlds-proc       = { path = "../crawlds-proc" }
+crawlds-power      = { path = "../crawlds-power" }
+crawlds-vfs        = { path = "../crawlds-vfs" }
+crawlds-webservice  = { path = "../crawlds-webservice" }
+crawlds-greeter    = { path = "../crawlds-greeter" }
+crawlds-theme      = { path = "../crawlds-theme" }
+greetd_ipc         = { workspace = true }
+
+tokio            = { workspace = true }
+serde            = { workspace = true }
+serde_json       = { workspace = true }
+anyhow           = { workspace = true }
+tracing          = { workspace = true }
+tracing-subscriber = { workspace = true }
+figment          = { workspace = true }
+libc             = "0.2"
+toml             = { workspace = true }
+zbus            = { workspace = true }

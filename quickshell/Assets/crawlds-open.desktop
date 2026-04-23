@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=RDS
+Comment=Select an application to open links and files
+Exec=roxide open %u
+Icon=roxidelogo
+Terminal=false
+NoDisplay=true
+MimeType=x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/roxide;text/html;application/xhtml+xml;
+Categories=Utility;
+    

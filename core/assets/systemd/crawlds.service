@@ -1,0 +1,32 @@
+[Unit]
+Description=crawlds daemon
+Documentation=https://github.com/me-osano/crawlds
+After=graphical-session.target
+# Required for clipboard (WAYLAND_DISPLAY) and D-Bus session services
+Requires=dbus.socket
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/crawlds-daemon
+Restart=on-failure
+RestartSec=3s
+WatchDogSec=30s
+
+Environment=CRAWLDS_LOG=info
+EnvironmentFile=/etc/crawlds/environment
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=crawlds
+
+User=crawlds
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%t /var/cache/crawlds
+NoNewPrivileges=true
+Slice=user-%u
+
+[Install]
+WantedBy=graphical-session.target

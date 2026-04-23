@@ -1,0 +1,444 @@
+version = 1
+
+# crawlds shell configuration
+# Quickshell-only settings - stored in ~/.config/crawlds/shell.toml
+# These are UI-only settings, not synced with daemon
+
+# ── Bar ──────────────────────────────────────────────────────────────────────
+[bar]
+bar_type = "simple"
+position = "top"
+monitors = []
+density = "default"
+show_outline = false
+show_capsule = true
+capsule_opacity = 1.0
+capsule_color_key = "none"
+widget_spacing = 6
+content_padding = 2
+font_scale = 1.0
+background_opacity = 0.93
+use_separate_opacity = false
+force_content_overlay = true
+floating = false
+margin_vertical = 4
+margin_horizontal = 4
+frame_thickness = 8
+frame_radius = 12
+outer_corners = true
+hide_on_overview = false
+display_mode = "always_visible"
+auto_hide_delay = 500
+auto_show_delay = 150
+show_on_workspace_switch = true
+
+[bar.widgets]
+left = [
+    { id = "Launcher" },
+    { id = "Clock" },
+    { id = "SystemMonitor" },
+    { id = "ActiveWindow" },
+    { id = "MediaMini" }
+]
+center = [{ id = "Workspace" }]
+right = [
+    { id = "Tray" },
+    { id = "Battery" },
+    { id = "Volume" },
+    { id = "Brightness" },
+    { id = "ControlCenter" }
+]
+
+[bar.screen_overrides] = []
+
+# ── General ─────────────────────────────────────────────────
+[general]
+avatar_image = ""
+dimmer_opacity = 0.2
+show_screen_corners = false
+force_black_screen_corners = false
+scale_ratio = 1.0
+radius_ratio = 1.0
+i_radius_ratio = 1.0
+box_radius_ratio = 1.0
+screen_radius_ratio = 1.0
+animation_speed = 1.0
+animation_disabled = false
+compact_lock_screen = false
+lock_screen_animations = false
+lock_on_suspend = true
+show_session_buttons_on_lock_screen = true
+show_hibernate_on_lock_screen = false
+lock_screen_media_controls = false
+enable_shadows = true
+enable_blur_behind = true
+shadow_direction = "bottom_right"
+shadow_offset_x = 2
+shadow_offset_y = 3
+language = ""
+allow_panels_on_screen_without_bar = true
+enable_lock_screen_countdown = true
+lock_screen_countdown_duration = 10000
+auto_start_auth = false
+allow_password_with_fprintd = false
+clock_style = "custom"
+clock_format = "hh\\nmm"
+password_chars = false
+lock_screen_monitors = []
+lock_screen_blur = 0.0
+lock_screen_tint = 0.0
+reverse_scroll = false
+smooth_scroll_enabled = true
+
+[general.keybinds]
+key_up = ["Up"]
+key_down = ["Down"]
+key_left = ["Left"]
+key_right = ["Right"]
+key_enter = ["Return"]
+key_escape = ["Esc"]
+key_remove = ["Del"]
+
+# ── UI ────────────────────────────────────────────────────
+[ui]
+font_default = ""
+font_fixed = ""
+font_default_scale = 1.0
+font_fixed_scale = 1.0
+tooltips_enabled = true
+scrollbar_always_visible = true
+box_border_enabled = false
+panel_background_opacity = 0.93
+translucent_widgets = false
+panels_attached_to_bar = true
+settings_panel_mode = "attached"
+settings_panel_side_bar_card_style = false
+
+# ── Location ────────────────────────────────────────────────
+[location]
+name = "Tokyo"
+use_12hour_format = false
+show_week_number_in_calendar = false
+show_calendar_events = true
+analog_clock_in_calendar = false
+first_day_of_week = -1
+
+# ── Calendar ────────────────────────────────────────────────
+[calendar]
+cards = [
+    { enabled = true, id = "calendar-header-card" },
+    { enabled = true, id = "calendar-month-card" }
+]
+
+# ── Wallpaper ─────────────────────────────────────────────
+[wallpaper]
+enabled = true
+overview_enabled = false
+directory = ""
+monitor_directories = []
+enable_multi_monitor_directories = false
+show_hidden_files = false
+view_mode = "single"
+set_wallpaper_on_all_monitors = true
+link_light_and_dark_wallpapers = true
+fill_mode = "crop"
+fill_color = "#000000"
+use_solid_color = false
+solid_color = "#1a1a2e"
+automation_enabled = false
+wallpaper_change_mode = "random"
+random_interval_sec = 300
+transition_duration = 1500
+transition_type = "random"
+skip_startup_transition = false
+transition_edge_smoothness = 0.05
+panel_position = "follow_bar"
+hide_wallpaper_filenames = false
+use_original_images = false
+overview_blur = 0.4
+overview_tint = 0.6
+use_wallhaven = false
+wallhaven_query = ""
+wallhaven_sorting = "relevance"
+wallhaven_order = "desc"
+wallhaven_categories = "111"
+wallhaven_purity = "100"
+wallhaven_ratios = ""
+wallhaven_api_key = ""
+wallhaven_resolution_mode = "atleast"
+wallhaven_resolution_width = ""
+wallhaven_resolution_height = ""
+sort_order = "name"
+favorites = []
+
+# ── App Launcher ─────────────────────────────────────────
+[app_launcher]
+enable_clipboard_history = false
+auto_paste_clipboard = false
+enable_clip_preview = true
+clipboard_wrap_text = true
+clipboard_watch_text_command = "wl-paste --type text --watch cliphist store"
+clipboard_watch_image_command = "wl-paste --type image --watch cliphist store"
+position = "center"
+pinned_apps = []
+use_app2_unit = false
+sort_by_most_used = true
+terminal_command = "alacritty -e"
+custom_launch_prefix_enabled = false
+custom_launch_prefix = ""
+view_mode = "list"
+show_categories = true
+icon_mode = "tabler"
+show_icon_background = false
+enable_settings_search = true
+enable_windows_search = true
+enable_session_search = true
+ignore_mouse_input = false
+screenshot_annotation_tool = ""
+overview_layer = false
+density = "default"
+
+# ── Control Center ────────────────────────────────────────
+[control_center]
+position = "close_to_bar_button"
+disk_path = "/"
+
+[control_center.shortcuts]
+left = [
+    { id = "Network" },
+    { id = "Bluetooth" },
+    { id = "WallpaperSelector" }
+]
+right = [
+    { id = "Notifications" },
+    { id = "PowerProfile" },
+    { id = "KeepAwake" },
+    { id = "NightLight" }
+]
+
+[control_center.cards] = [
+    { enabled = true, id = "profile-card" },
+    { enabled = true, id = "shortcuts-card" },
+    { enabled = true, id = "audio-card" },
+    { enabled = false, id = "brightness-card" },
+    { enabled = true, id = "notifications-card" },
+    { enabled = true, id = "media-sysmon-card" }
+]
+
+# ── System Monitor ─────────────────────────────────────
+[system_monitor]
+cpu_warning_threshold = 80
+cpu_critical_threshold = 90
+temp_warning_threshold = 80
+temp_critical_threshold = 90
+gpu_warning_threshold = 80
+gpu_critical_threshold = 90
+mem_warning_threshold = 80
+mem_critical_threshold = 90
+swap_warning_threshold = 80
+swap_critical_threshold = 90
+disk_warning_threshold = 80
+disk_critical_threshold = 90
+disk_avail_warning_threshold = 20
+disk_avail_critical_threshold = 10
+battery_warning_threshold = 20
+battery_critical_threshold = 5
+enable_dgpu_monitoring = false
+use_custom_colors = false
+warning_color = ""
+critical_color = ""
+external_monitor = "resources || missioncenter || jdsystemmonitor || corestats || system-monitoring-center || gnome-system-monitor || plasma-systemmonitor || mate-system-monitor || ukui-system-monitor || deepin-system-monitor || pantheon-system-monitor"
+
+# ── Dock ─────────────────────────────────────────────────
+[dock]
+enabled = true
+position = "bottom"
+display_mode = "auto_hide"
+dock_type = "floating"
+background_opacity = 1.0
+floating_ratio = 1.0
+size = 1.0
+only_same_output = true
+monitors = []
+pinned_apps = []
+colorize_icons = false
+show_launcher_icon = false
+launcher_position = "end"
+launcher_icon_color = "none"
+pinned_static = false
+inactive_indicators = false
+group_apps = false
+group_context_menu_mode = "extended"
+group_click_action = "cycle"
+group_indicator_style = "dots"
+dead_opacity = 0.6
+animation_speed = 1.0
+sit_on_frame = false
+show_dock_indicator = false
+indicator_thickness = 3
+indicator_color = "primary"
+indicator_opacity = 0.6
+
+# ── Network ────────────────────────────────────────────────
+[network]
+wifi_enabled = true
+airplane_mode_enabled = false
+bluetooth_rssi_polling_enabled = false
+bluetooth_rssi_poll_interval_ms = 60000
+network_panel_view = "wifi"
+wifi_details_view_mode = "grid"
+bluetooth_details_view_mode = "grid"
+bluetooth_hide_unnamed_devices = false
+disable_discoverability = false
+bluetooth_auto_connect = true
+
+# ── Session Menu ───────────────────────────────────────
+[session_menu]
+enable_countdown = true
+countdown_duration = 10000
+position = "center"
+show_header = true
+show_keybinds = true
+large_buttons_style = true
+large_buttons_layout = "single-row"
+power_options = [
+    { action = "lock", enabled = true, keybind = "1" },
+    { action = "suspend", enabled = true, keybind = "2" },
+    { action = "hibernate", enabled = true, keybind = "3" },
+    { action = "reboot", enabled = true, keybind = "4" },
+    { action = "logout", enabled = true, keybind = "5" },
+    { action = "shutdown", enabled = true, keybind = "6" },
+    { action = "reboot_to_uefi", enabled = true, keybind = "7" }
+]
+
+# ── Notifications ────────────────────────────────────────────
+[notifications]
+enabled = true
+enable_markdown = false
+density = "default"
+monitors = []
+location = "top_right"
+overlay_layer = true
+background_opacity = 1.0
+respect_expire_timeout = false
+low_urgency_duration = 3
+normal_urgency_duration = 8
+critical_urgency_duration = 15
+clear_dismissed = true
+
+[notifications.save_to_history]
+low = true
+normal = true
+critical = true
+
+[notifications.sounds]
+enabled = false
+volume = 0.5
+separate_sounds = false
+critical_sound_file = ""
+normal_sound_file = ""
+low_sound_file = ""
+excluded_apps = "discord,firefox,chrome,chromium,edge"
+
+[notifications.enable_media_toast] = false
+[notifications.enable_keyboard_layout_toast] = true
+[notifications.enable_battery_toast] = true
+
+# ── OSD ─────────────────────────────────────────────────
+[osd]
+enabled = true
+location = "top_right"
+auto_hide_ms = 2000
+overlay_layer = true
+background_opacity = 1.0
+enabled_types = [0, 1, 2]
+monitors = []
+
+# ── Audio ────────────────────────────────────────────────
+[audio]
+volume_step = 5
+volume_overdrive = false
+spectrum_frame_rate = 30
+visualizer_type = "linear"
+spectrum_mirrored = true
+mpris_blacklist = []
+preferred_player = ""
+volume_feedback = false
+volume_feedback_sound_file = ""
+
+# ── Brightness ──────────────────────────────────────────
+[brightness]
+brightness_step = 5
+enforce_minimum = true
+enable_ddc_support = false
+backlight_device_mappings = []
+
+# ── Color Schemes ──────────────────────────────────────
+[color_schemes]
+use_wallpaper_colors = false
+predefined_scheme = "CrawlDS (default)"
+dark_mode = true
+scheduling_mode = "off"
+manual_sunrise = "06:30"
+manual_sunset = "18:30"
+generation_method = "tonal-spot"
+monitor_for_colors = ""
+sync_gsettings = true
+
+# ── Templates ─────────────────────────────────────────
+[templates]
+active_templates = []
+enable_user_theming = false
+
+# ── Night Light ────────────────────────────────────
+[night_light]
+enabled = false
+forced = false
+auto_schedule = true
+night_temp = "4000"
+day_temp = "6500"
+manual_sunrise = "06:30"
+manual_sunset = "18:30"
+
+# ── Idle ──────────────────────────────────────────────
+[idle]
+enabled = false
+
+# ── Desktop Widgets ────────────────────────────────────────
+[desktop_widgets]
+enabled = false
+overview_enabled = true
+grid_snap = false
+grid_snap_scale = false
+monitor_widgets = []
+
+# ── Core (synced with daemon via DBus) ────────────────────────
+[core]
+# These mirror backend state and can sync via DBus
+daemon_enabled = true
+daemon_log_level = "info"
+daemon_port = 1984
+tcp_addr = ""
+sync_mode_with_portal = false
+sync_theme_with_portal = false
+sync_icon_theme_with_portal = false
+ui_theme = "system"
+ui_icon_theme = ""
+ui_font_family = ""
+ui_scale = 1.0
+ui_reduce_motion = false
+wifi_enabled = true
+ethernet_enabled = true
+hotspot_enabled = false
+power_profile = "balanced"
+battery_show_percent = true
+battery_threshold_low = 20
+battery_threshold_critical = 10
+clipboard_history_enabled = true
+clipboard_history_max = 50
+
+# ── Webservice (RSS) ────────────────────────────────
+[webservice.rss]
+enabled = true
+show_image_previews = true
+feeds = []

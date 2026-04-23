@@ -1,0 +1,133 @@
+{
+  "version": "1.0",
+  "name": "Windows 11",
+  "description": "Windows 11 like layout",
+  "timestamp": "2026-01-21T02:12:45.061Z",
+  "topBar": {
+    "visible": false,
+    "position": "top",
+    "widgets": {
+      "left": [
+        "launcherButton"
+      ],
+      "center": [
+        "workspaceSwitcher"
+      ],
+      "right": [
+        {
+          "id": "systemTray",
+          "enabled": true
+        },
+        {
+          "id": "weather",
+          "enabled": true
+        },
+        {
+          "id": "clock",
+          "enabled": true
+        },
+        {
+          "id": "notificationButton",
+          "enabled": true
+        },
+        {
+          "id": "controlCenterButton",
+          "enabled": true
+        },
+        {
+          "id": "systemUpdate",
+          "enabled": true
+        }
+      ]
+    }
+  },
+  "dock": {
+    "visible": false,
+    "widgetsEnabled": true,
+    "position": "bottom",
+    "widgets": {
+      "left": [
+        {
+          "id": "launcherButton",
+          "enabled": true
+        },
+        {
+          "id": "workspaceSwitcher",
+          "enabled": true
+        }
+      ],
+      "center": [
+        {
+          "id": "launchpad",
+          "enabled": true
+        },
+        {
+          "id": "pinnedApps",
+          "enabled": true
+        },
+        {
+          "id": "trash",
+          "enabled": true
+        }
+      ],
+      "right": [
+        {
+          "id": "systemTray",
+          "enabled": true
+        },
+        {
+          "id": "weather",
+          "enabled": true
+        },
+        {
+          "id": "clock",
+          "enabled": true
+        },
+        {
+          "id": "controlCenterButton",
+          "enabled": true
+        },
+        {
+          "id": "settingsButton",
+          "enabled": true
+        },
+        {
+          "id": "music",
+          "enabled": true
+        }
+      ]
+    }
+  },
+  "taskBar": {
+    "visible": true,
+    "widgets": {
+      "left": [
+        {
+          "id": "launcherButton",
+          "enabled": true
+        },
+        {
+          "id": "workspaceSwitcher",
+          "enabled": true
+        }
+      ],
+      "center": [
+        {
+          "id": "pinnedApps",
+          "enabled": true
+        },
+        {
+          "id": "separator",
+          "enabled": true
+        }
+      ],
+      "right": [
+        "systemTray",
+        "weather",
+        "clock",
+        "controlCenterButton",
+        "systemUpdate"
+      ]
+    }
+  }
+}

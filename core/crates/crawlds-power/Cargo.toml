@@ -1,0 +1,18 @@
+[package]
+name = "crawlds-power"
+description = "Battery and power status via UPower D-Bus"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+crawlds-ipc       = { workspace = true }
+crawlds-scheduler = { path = "../crawlds-scheduler" }
+tokio            = { workspace = true }
+serde        = { workspace = true }
+thiserror    = { workspace = true }
+tracing      = { workspace = true }
+zbus         = { workspace = true }
+futures-util = { workspace = true }
+anyhow       = { workspace = true }

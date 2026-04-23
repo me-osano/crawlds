@@ -1,0 +1,22 @@
+[package]
+name = "crawlds-clipboard"
+description = "Wayland clipboard access - true event-driven via ext_data_control"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+crawlds-ipc        = { workspace = true }
+crawlds-scheduler  = { path = "../crawlds-scheduler" }
+tokio              = { workspace = true }
+serde              = { workspace = true }
+thiserror          = { workspace = true }
+tracing            = { workspace = true }
+anyhow             = { workspace = true }
+sled               = { workspace = true }
+fnv                = "1"
+dirs               = "5"
+crossbeam          = "0.8"
+wayland-clipboard-listener = "0.6"
+wl-clipboard-rs    = "0.9"

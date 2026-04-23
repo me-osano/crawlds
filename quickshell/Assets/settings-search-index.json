@@ -1,0 +1,1901 @@
+[
+  {
+    "label": "Output device",
+    "description": "Select the desired audio output device.",
+    "widget": "NLabel",
+    "tab": 13,
+    "tabLabel": "Audio",
+    "subTab": 1,
+    "subTabLabel": "Devices"
+  },
+  {
+    "label": "Input device",
+    "description": "Select the desired audio input device.",
+    "widget": "NLabel",
+    "tab": 13,
+    "tabLabel": "Audio",
+    "subTab": 1,
+    "subTabLabel": "Devices"
+  },
+  {
+    "label": "Primary player",
+    "description": "Enter a keyword to identify your main player.",
+    "widget": "NTextInput",
+    "tab": 13,
+    "tabLabel": "Audio",
+    "subTab": 2,
+    "subTabLabel": "Media"
+  },
+  {
+    "label": "Excluded player",
+    "description": "Add keywords for players you want the system to ignore. Each keyword should be on a new line.",
+    "widget": "NTextInputButton",
+    "tab": 13,
+    "tabLabel": "Audio",
+    "subTab": 2,
+    "subTabLabel": "Media"
+  },
+  {
+    "label": "Visualization type",
+    "description": "Choose a visualization type for media playback.",
+    "widget": "NComboBox",
+    "tab": 13,
+    "tabLabel": "Audio",
+    "subTab": 3,
+    "subTabLabel": "Visualizer"
+  },
+  {
+    "label": "Frame rate",
+    "description": "Higher rates are smoother but use more resources.",
+    "widget": "NComboBox",
+    "tab": 13,
+    "tabLabel": "Audio",
+    "subTab": 3,
+    "subTabLabel": "Visualizer"
+  },
+  {
+    "label": "Output volume",
+    "description": "System-wide volume level.",
+    "widget": "NValueSlider",
+    "tab": 13,
+    "tabLabel": "Audio",
+    "subTab": 0,
+    "subTabLabel": "Volumes"
+  },
+  {
+    "label": "Mute audio output",
+    "description": "Mute the system's main audio output.",
+    "widget": "NToggle",
+    "tab": 13,
+    "tabLabel": "Audio",
+    "subTab": 0,
+    "subTabLabel": "Volumes"
+  },
+  {
+    "label": "Play volume feedback sound",
+    "description": "Play a feedback sound when adjusting volume.",
+    "widget": "NToggle",
+    "tab": 13,
+    "tabLabel": "Audio",
+    "subTab": 0,
+    "subTabLabel": "Volumes"
+  },
+  {
+    "label": "Volume feedback sound file",
+    "description": "Path to the sound file played when changing volume.",
+    "widget": "NLabel",
+    "tab": 13,
+    "tabLabel": "Audio",
+    "subTab": 0,
+    "subTabLabel": "Volumes"
+  },
+  {
+    "label": "Input volume",
+    "description": "Microphone input volume level.",
+    "widget": "NValueSlider",
+    "tab": 13,
+    "tabLabel": "Audio",
+    "subTab": 0,
+    "subTabLabel": "Volumes"
+  },
+  {
+    "label": "Mute audio input",
+    "description": "Mute the default audio input (microphone).",
+    "widget": "NToggle",
+    "tab": 13,
+    "tabLabel": "Audio",
+    "subTab": 0,
+    "subTabLabel": "Volumes"
+  },
+  {
+    "label": "Volume step size",
+    "description": "Adjust the step size for volume changes (scroll wheel, keyboard shortcuts).",
+    "widget": "NSpinBox",
+    "tab": 13,
+    "tabLabel": "Audio",
+    "subTab": 0,
+    "subTabLabel": "Volumes"
+  },
+  {
+    "label": "Allow volume overdrive",
+    "description": "Allow raising volume above 100%. May not be supported by all hardware.",
+    "widget": "NToggle",
+    "tab": 13,
+    "tabLabel": "Audio",
+    "subTab": 0,
+    "subTabLabel": "Volumes"
+  },
+  {
+    "label": "Bar position",
+    "description": "Choose where to place the bar on the screen.",
+    "widget": "NComboBox",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Bar density",
+    "description": "Adjust the bar's padding for a compact or spacious look.",
+    "widget": "NComboBox",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Bar type",
+    "description": "Choose the style of the bar: Simple, Floating or Framed.",
+    "widget": "NComboBox",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Display mode",
+    "description": "Choose when the bar is visible.",
+    "widget": "NComboBox",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Use separate bar opacity",
+    "description": "Enable to use a separate opacity value for the bar background.",
+    "widget": "NToggle",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Bar background opacity",
+    "description": "Set the background opacity specifically for the bar.",
+    "widget": "NValueSlider",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Font scale",
+    "description": "Adjust the font size scale for text displayed in the bar.",
+    "widget": "NValueSlider",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Widget spacing",
+    "description": "Adjust the spacing between each widget in the bar.",
+    "widget": "NValueSlider",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Content padding",
+    "description": "Adjust the padding between bar edges and widgets.",
+    "widget": "NValueSlider",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Show widget outlines",
+    "description": "Displays a visible border around every widget.",
+    "widget": "NToggle",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Show capsule",
+    "description": "Show widget backgrounds.",
+    "widget": "NToggle",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Capsule opacity",
+    "description": "Set the opacity level for widget backgrounds when capsule is shown.",
+    "widget": "NValueSlider",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Hide bar on overview",
+    "description": "Hide the bar and close panels when the compositor overview is active.",
+    "widget": "NToggle",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Outer corners",
+    "description": "Display outwardly curved corners on the bar.",
+    "widget": "NToggle",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Frame Settings",
+    "description": "Adjust frame thickness and inner corner radius",
+    "widget": "NLabel",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Thickness",
+    "description": "",
+    "widget": "NValueSlider",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Inner Radius",
+    "description": "",
+    "widget": "NValueSlider",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Margins",
+    "description": "Adjust the margins around the floating bar.",
+    "widget": "NLabel",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Vertical",
+    "description": "",
+    "widget": "NValueSlider",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Horizontal",
+    "description": "",
+    "widget": "NValueSlider",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Hide Delay",
+    "description": "Time before bar hides after mouse leaves",
+    "widget": "NValueSlider",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Show Delay",
+    "description": "Time before bar shows when mouse enters edge",
+    "widget": "NValueSlider",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Show bar on workspace switch",
+    "description": "Automatically show the bar briefly when the workspace changes.",
+    "widget": "NToggle",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Override global settings",
+    "description": "Use custom settings for this monitor.",
+    "widget": "NToggle",
+    "tab": 4,
+    "tabLabel": "Bar",
+    "subTab": 2,
+    "subTabLabel": "Monitors"
+  },
+  {
+    "label": "Dark Mode",
+    "description": "Switches to a darker theme for easier viewing at night.",
+    "widget": "NToggle",
+    "tab": 2,
+    "tabLabel": "Color Scheme",
+    "subTab": 0,
+    "subTabLabel": "Colors"
+  },
+  {
+    "label": "Dark Mode schedule",
+    "description": "Enables automatic switching between Light and Dark Mode.",
+    "widget": "NComboBox",
+    "tab": 2,
+    "tabLabel": "Color Scheme",
+    "subTab": 0,
+    "subTabLabel": "Colors"
+  },
+  {
+    "label": "Manual scheduling",
+    "description": "Set custom times for sunrise and sunset.",
+    "widget": "NLabel",
+    "tab": 2,
+    "tabLabel": "Color Scheme",
+    "subTab": 0,
+    "subTabLabel": "Colors"
+  },
+  {
+    "label": "Use wallpaper colors",
+    "description": "Generate color schemes from your wallpaper. Automatically extracts colors to create a cohesive theme.",
+    "widget": "NToggle",
+    "tab": 2,
+    "tabLabel": "Color Scheme",
+    "subTab": 0,
+    "subTabLabel": "Colors"
+  },
+  {
+    "label": "Color generation source",
+    "description": "Select which monitor to use for extracting wallpaper colors.",
+    "widget": "NComboBox",
+    "tab": 2,
+    "tabLabel": "Color Scheme",
+    "subTab": 0,
+    "subTabLabel": "Colors"
+  },
+  {
+    "label": "Palette generation method",
+    "description": "Choose your favorite palette generation method.",
+    "widget": "NComboBox",
+    "tab": 2,
+    "tabLabel": "Color Scheme",
+    "subTab": 0,
+    "subTabLabel": "Colors"
+  },
+  {
+    "label": "Enable user templates",
+    "description": "Only enable if you know what you are doing \u2014 refer to our online documentation.",
+    "widget": "NCheckbox",
+    "tab": 2,
+    "tabLabel": "Color Scheme",
+    "subTab": 1,
+    "subTabLabel": "Templates"
+  },
+  {
+    "label": "Bluetooth",
+    "description": "",
+    "widget": "NToggle",
+    "tab": 15,
+    "tabLabel": "Connections",
+    "subTab": 1,
+    "subTabLabel": "Bluetooth"
+  },
+  {
+    "label": "Connected devices",
+    "description": "",
+    "widget": "NLabel",
+    "tab": 15,
+    "tabLabel": "Connections",
+    "subTab": 1,
+    "subTabLabel": "Bluetooth"
+  },
+  {
+    "label": "Paired devices",
+    "description": "",
+    "widget": "NLabel",
+    "tab": 15,
+    "tabLabel": "Connections",
+    "subTab": 1,
+    "subTabLabel": "Bluetooth"
+  },
+  {
+    "label": "Available devices",
+    "description": "",
+    "widget": "NLabel",
+    "tab": 15,
+    "tabLabel": "Connections",
+    "subTab": 1,
+    "subTabLabel": "Bluetooth"
+  },
+  {
+    "label": "Hide unnamed devices",
+    "description": "Hide devices that appear only as Bluetooth addresses.",
+    "widget": "NToggle",
+    "tab": 15,
+    "tabLabel": "Connections",
+    "subTab": 1,
+    "subTabLabel": "Bluetooth"
+  },
+  {
+    "label": "Disable device visibility",
+    "description": "Hide your device from nearby Bluetooth devices.",
+    "widget": "NToggle",
+    "tab": 15,
+    "tabLabel": "Connections",
+    "subTab": 1,
+    "subTabLabel": "Bluetooth"
+  },
+  {
+    "label": "Bluetooth signal polling",
+    "description": "Periodically sample RSSI for connected devices via bluetoothctl. May not be available for all devices; uses minimal resources when enabled.",
+    "widget": "NToggle",
+    "tab": 15,
+    "tabLabel": "Connections",
+    "subTab": 1,
+    "subTabLabel": "Bluetooth"
+  },
+  {
+    "label": "Polling interval",
+    "description": "Configure how often to update signal strength for connected devices.",
+    "widget": "NSpinBox",
+    "tab": 15,
+    "tabLabel": "Connections",
+    "subTab": 1,
+    "subTabLabel": "Bluetooth"
+  },
+  {
+    "label": "Airplane Mode",
+    "description": "",
+    "widget": "NToggle",
+    "tab": 15,
+    "tabLabel": "Connections",
+    "subTab": 0,
+    "subTabLabel": "Wi Fi"
+  },
+  {
+    "label": "Wi-Fi",
+    "description": "",
+    "widget": "NToggle",
+    "tab": 15,
+    "tabLabel": "Connections",
+    "subTab": 0,
+    "subTabLabel": "Wi Fi"
+  },
+  {
+    "label": "Position",
+    "description": "Choose where the control center panel appears when opened.",
+    "widget": "NComboBox",
+    "tab": 7,
+    "tabLabel": "Control Center",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "System monitor disk path",
+    "description": "Select which disk mount point the system monitor card in the control center should monitor.",
+    "widget": "NComboBox",
+    "tab": 7,
+    "tabLabel": "Control Center",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Enable desktop widgets",
+    "description": "Enable or disable desktop widgets entirely.",
+    "widget": "NToggle",
+    "tab": 6,
+    "tabLabel": "Desktop Widgets",
+    "subTab": null
+  },
+  {
+    "label": "Show in overview",
+    "description": "Show desktop widgets while the compositor overview is open.",
+    "widget": "NToggle",
+    "tab": 6,
+    "tabLabel": "Desktop Widgets",
+    "subTab": null
+  },
+  {
+    "label": "Backlight device",
+    "description": "Select a backlight device for this output.",
+    "widget": "NComboBox",
+    "tab": 14,
+    "tabLabel": "Display",
+    "subTab": 0,
+    "subTabLabel": "Brightness"
+  },
+  {
+    "label": "Brightness step size",
+    "description": "Adjust the step size for brightness changes (scroll wheel and keyboard shortcuts).",
+    "widget": "NSpinBox",
+    "tab": 14,
+    "tabLabel": "Display",
+    "subTab": 0,
+    "subTabLabel": "Brightness"
+  },
+  {
+    "label": "Enforce minimum brightness (1%)",
+    "description": "Solves the problem of backlight completely turning off on some displays at 0% brightness.",
+    "widget": "NToggle",
+    "tab": 14,
+    "tabLabel": "Display",
+    "subTab": 0,
+    "subTabLabel": "Brightness"
+  },
+  {
+    "label": "External brightness support",
+    "description": "Enable DDCUtil support for controlling brightness on external displays via DDC/CI protocol.",
+    "widget": "NToggle",
+    "tab": 14,
+    "tabLabel": "Display",
+    "subTab": 0,
+    "subTabLabel": "Brightness"
+  },
+  {
+    "label": "Enable Night Light",
+    "description": "Apply a warm color filter to reduce blue light emission.",
+    "widget": "NToggle",
+    "tab": 14,
+    "tabLabel": "Display",
+    "subTab": 1,
+    "subTabLabel": "Night Light"
+  },
+  {
+    "label": "Night",
+    "description": "Controls the temperature during nighttime.",
+    "widget": "NLabel",
+    "tab": 14,
+    "tabLabel": "Display",
+    "subTab": 1,
+    "subTabLabel": "Night Light"
+  },
+  {
+    "label": "Day",
+    "description": "Controls the temperature during daytime.",
+    "widget": "NLabel",
+    "tab": 14,
+    "tabLabel": "Display",
+    "subTab": 1,
+    "subTabLabel": "Night Light"
+  },
+  {
+    "label": "Automatic scheduling",
+    "description": "Based on the sunset and sunrise time in <i>{location}</i> \u2014 recommended.",
+    "widget": "NToggle",
+    "tab": 14,
+    "tabLabel": "Display",
+    "subTab": 1,
+    "subTabLabel": "Night Light"
+  },
+  {
+    "label": "Force activation",
+    "description": "Ignores the schedule and applies the night filter immediately.",
+    "widget": "NToggle",
+    "tab": 14,
+    "tabLabel": "Display",
+    "subTab": 1,
+    "subTabLabel": "Night Light"
+  },
+  {
+    "label": "Enable dock",
+    "description": "Show or hide the dock entirely.",
+    "widget": "NToggle",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Dock style",
+    "description": "Choose between a floating pill or a static bar attached to the edge.",
+    "widget": "NComboBox",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Display",
+    "description": "Choose how the dock behaves.",
+    "widget": "NComboBox",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Dock sits on frame",
+    "description": "Align the dock inside the frame border instead of sitting on top.",
+    "widget": "NToggle",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Frame dock indicator",
+    "description": "Show a small indicator on the frame when the dock is hidden.",
+    "widget": "NToggle",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Background opacity",
+    "description": "Adjust the dock's background opacity.",
+    "widget": "NValueSlider",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Dead opacity",
+    "description": "Adjust the opacity of app icons that are not running.",
+    "widget": "NValueSlider",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Dock floating distance",
+    "description": "Set the distance between the dock and the edge of the screen.",
+    "widget": "NValueSlider",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Dock size",
+    "description": "Adjust the overall size of the dock.",
+    "widget": "NValueSlider",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Hide/show speed",
+    "description": "Adjust the speed of the dock hide/show animation.",
+    "widget": "NValueSlider",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Running indicators",
+    "description": "Display indicator pills for all apps, not just the currently active one.",
+    "widget": "NToggle",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Static pinned apps",
+    "description": "Always push pinned app icons to the left in static order.",
+    "widget": "NToggle",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Group same apps",
+    "description": "Group multiple windows from the same app into one dock entry.",
+    "widget": "NToggle",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Grouped app click action",
+    "description": "Choose what left-click does for grouped apps.",
+    "widget": "NComboBox",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Grouped app menu mode",
+    "description": "Choose how the context menu behaves for grouped apps.",
+    "widget": "NComboBox",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Grouped indicator style",
+    "description": "Choose how grouped running indicators display focused window state.",
+    "widget": "NComboBox",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Only apps from same monitor",
+    "description": "Show only apps from the monitor where the dock is located.",
+    "widget": "NToggle",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Colorize icons",
+    "description": "Apply theme colors to dock app icons (non-focused apps only).",
+    "widget": "NToggle",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Show app launcher",
+    "description": "Show the application launcher icon in the dock.",
+    "widget": "NToggle",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Launcher position",
+    "description": "Choose where the launcher icon appears in the dock.",
+    "widget": "NComboBox",
+    "tab": 5,
+    "tabLabel": "Dock",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Profile picture",
+    "description": "Your profile picture that appears throughout the interface.",
+    "widget": "NTextInputButton",
+    "tab": 0,
+    "tabLabel": "General",
+    "subTab": null
+  },
+  {
+    "label": "Default font",
+    "description": "Main font used throughout the interface.",
+    "widget": "NSearchableComboBox",
+    "tab": 0,
+    "tabLabel": "General",
+    "subTab": null
+  },
+  {
+    "label": "Monospaced font",
+    "description": "Monospaced font used for numbers and stats display.",
+    "widget": "NSearchableComboBox",
+    "tab": 0,
+    "tabLabel": "General",
+    "subTab": null
+  },
+  {
+    "label": "Default font size",
+    "description": "Increase or decrease the size of the standard text.",
+    "widget": "NValueSlider",
+    "tab": 0,
+    "tabLabel": "General",
+    "subTab": null
+  },
+  {
+    "label": "Monospaced font size",
+    "description": "Increase or decrease the size of the monospaced text.",
+    "widget": "NValueSlider",
+    "tab": 0,
+    "tabLabel": "General",
+    "subTab": null
+  },
+  {
+    "label": "Reverse scrolling",
+    "description": "Reverse the interpreted scroll direction",
+    "widget": "NToggle",
+    "tab": 0,
+    "tabLabel": "General",
+    "subTab": null
+  },
+  {
+    "label": "Navigation keybinds",
+    "description": "Configure global navigation keys for panels and launcher.",
+    "widget": "NLabel",
+    "tab": 0,
+    "tabLabel": "General",
+    "subTab": null
+  },
+  {
+    "label": "Enable clipboard history",
+    "description": "Access previously copied items from the launcher.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 1,
+    "subTabLabel": "Clipboard"
+  },
+  {
+    "label": "Enable clip preview",
+    "description": "Show a preview of the clipboard content when using the >clip command.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 1,
+    "subTabLabel": "Clipboard"
+  },
+  {
+    "label": "Wrap clipboard text",
+    "description": "Wrap text in the clipboard list instead of truncating it.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 1,
+    "subTabLabel": "Clipboard"
+  },
+  {
+    "label": "Auto paste",
+    "description": "Automatically paste the selected clipboard item. Requires wtype.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 1,
+    "subTabLabel": "Clipboard"
+  },
+  {
+    "label": "Text watch command",
+    "description": "Full command string passed to wl-paste for text changes. (requires restart)",
+    "widget": "NTextInput",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 1,
+    "subTabLabel": "Clipboard"
+  },
+  {
+    "label": "Image watch command",
+    "description": "Full command string passed to wl-paste for image changes. (requires restart)",
+    "widget": "NTextInput",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 1,
+    "subTabLabel": "Clipboard"
+  },
+  {
+    "label": "Use App2Unit to launch applications",
+    "description": "Uses an alternative launch method to better manage app processes and prevent issues.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 2,
+    "subTabLabel": "Execute"
+  },
+  {
+    "label": "Terminal command",
+    "description": "Command to launch a terminal. E.g. 'kitty -e' or 'gnome-terminal --'.",
+    "widget": "NTextInput",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 2,
+    "subTabLabel": "Execute"
+  },
+  {
+    "label": "Enable custom launch prefix",
+    "description": "Use a custom prefix for launching applications instead of the default method.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 2,
+    "subTabLabel": "Execute"
+  },
+  {
+    "label": "Custom launch prefix",
+    "description": "Prefix commands with a custom launcher (e.g. 'runapp' for systemd integration).",
+    "widget": "NTextInput",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 2,
+    "subTabLabel": "Execute"
+  },
+  {
+    "label": "Annotation tool",
+    "description": "Command to run when clicking the annotate button in clipboard history. The image will be piped to this command.",
+    "widget": "NTextInput",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 2,
+    "subTabLabel": "Execute"
+  },
+  {
+    "label": "Show above fullscreen",
+    "description": "Display the launcher on the overlay layer, above fullscreen windows. When enabled, the launcher will not attach to the bar.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "View mode",
+    "description": "Choose the layout for the launcher entries.",
+    "widget": "NComboBox",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Density",
+    "description": "Adjust the size of application icons and the density of the launcher.",
+    "widget": "NComboBox",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Show categories",
+    "description": "Show category tabs for filtering applications.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Use native icons",
+    "description": "Use native system icons instead of Tabler icons.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Show icon background",
+    "description": "Show a rounded rectangle background behind icons.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Sort by most used",
+    "description": "When enabled, frequently launched apps appear first in the list.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Enable settings search",
+    "description": "Show settings results when searching in the launcher.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Enable windows search",
+    "description": "Search and focus active windows.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Enable session search",
+    "description": "Show session actions (lock, shutdown, reboot, etc.) when searching in the launcher.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Ignore mouse input",
+    "description": "Disable mouse interaction and scrollwheel in the launcher.",
+    "widget": "NToggle",
+    "tab": 8,
+    "tabLabel": "Launcher",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Clock style",
+    "description": "Choose the visual style of the clock on the lock screen.",
+    "widget": "NComboBox",
+    "tab": 11,
+    "tabLabel": "Lock Screen",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Clock format",
+    "description": "Customize the clock format using date/time syntax tokens.",
+    "widget": "NTextInput",
+    "tab": 11,
+    "tabLabel": "Lock Screen",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Random password icons",
+    "description": "Cute icons used to hide your password.",
+    "widget": "NToggle",
+    "tab": 11,
+    "tabLabel": "Lock Screen",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Compact lock screen",
+    "description": "Show only the login input and system controls, hiding weather and media widgets.",
+    "widget": "NToggle",
+    "tab": 11,
+    "tabLabel": "Lock Screen",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Lockscreen animations",
+    "description": "Enable or disable lockscreen animations.",
+    "widget": "NToggle",
+    "tab": 11,
+    "tabLabel": "Lock Screen",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Lock screen blur strength",
+    "description": "Applies a blur effect to the lock screen wallpaper.",
+    "widget": "NValueSlider",
+    "tab": 11,
+    "tabLabel": "Lock Screen",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Lock screen tint strength",
+    "description": "Applies a tint overlay to the lock screen wallpaper.",
+    "widget": "NValueSlider",
+    "tab": 11,
+    "tabLabel": "Lock Screen",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Lock on suspend",
+    "description": "Automatically lock the screen when suspending the system.",
+    "widget": "NToggle",
+    "tab": 11,
+    "tabLabel": "Lock Screen",
+    "subTab": 1,
+    "subTabLabel": "Behavior"
+  },
+  {
+    "label": "Auto-start authentication",
+    "description": "Automatically starts fingerprint authentication without requiring a key press or button click.",
+    "widget": "NToggle",
+    "tab": 11,
+    "tabLabel": "Lock Screen",
+    "subTab": 1,
+    "subTabLabel": "Behavior"
+  },
+  {
+    "label": "Allow password login with fprintd",
+    "description": "When fprintd (fingerprint authentication) is active, this option lets you still login using your password instead of a fingerprint",
+    "widget": "NToggle",
+    "tab": 11,
+    "tabLabel": "Lock Screen",
+    "subTab": 1,
+    "subTabLabel": "Behavior"
+  },
+  {
+    "label": "Power controls",
+    "description": "Allow access to power settings from the lock screen.",
+    "widget": "NToggle",
+    "tab": 11,
+    "tabLabel": "Lock Screen",
+    "subTab": 1,
+    "subTabLabel": "Behavior"
+  },
+  {
+    "label": "Show hibernate",
+    "description": "Show the option 'hibernate' in the power controls.",
+    "widget": "NToggle",
+    "tab": 11,
+    "tabLabel": "Lock Screen",
+    "subTab": 1,
+    "subTabLabel": "Behavior"
+  },
+  {
+    "label": "Enable countdown timer",
+    "description": "Show a countdown timer before executing power actions.",
+    "widget": "NToggle",
+    "tab": 11,
+    "tabLabel": "Lock Screen",
+    "subTab": 1,
+    "subTabLabel": "Behavior"
+  },
+  {
+    "label": "Countdown duration",
+    "description": "Set how long the countdown timer lasts before executing power actions.",
+    "widget": "NValueSlider",
+    "tab": 11,
+    "tabLabel": "Lock Screen",
+    "subTab": 1,
+    "subTabLabel": "Behavior"
+  },
+  {
+    "label": "Respect expire timeout",
+    "description": "Use the expire timeout set in the notification.",
+    "widget": "NToggle",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 1,
+    "subTabLabel": "Duration"
+  },
+  {
+    "label": "Low urgency",
+    "description": "How long low priority notifications stay visible.",
+    "widget": "NValueSlider",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 1,
+    "subTabLabel": "Duration"
+  },
+  {
+    "label": "Normal urgency",
+    "description": "How long normal priority notifications stay visible.",
+    "widget": "NValueSlider",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 1,
+    "subTabLabel": "Duration"
+  },
+  {
+    "label": "Critical urgency",
+    "description": "How long critical priority notifications stay visible.",
+    "widget": "NValueSlider",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 1,
+    "subTabLabel": "Duration"
+  },
+  {
+    "label": "Enable notifications",
+    "description": "Enable or disable the notification daemon, requires a restart of CrawlDS shell.",
+    "widget": "NToggle",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Do Not Disturb",
+    "description": "Disable all notification popups when enabled.",
+    "widget": "NToggle",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Always on top",
+    "description": "Display notifications above fullscreen windows and other layers.",
+    "widget": "NToggle",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Clear on dismissed",
+    "description": "Clear notification from history when dismissed.",
+    "widget": "NToggle",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 2,
+    "subTabLabel": "History"
+  },
+  {
+    "label": "Enable Markdown",
+    "description": "Render notification content using Markdown formatting.",
+    "widget": "NToggle",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 2,
+    "subTabLabel": "History"
+  },
+  {
+    "label": "Save low urgency to history",
+    "description": "Save low priority notifications to history.",
+    "widget": "NToggle",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 2,
+    "subTabLabel": "History"
+  },
+  {
+    "label": "Save normal urgency to history",
+    "description": "Save normal priority notifications to history.",
+    "widget": "NToggle",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 2,
+    "subTabLabel": "History"
+  },
+  {
+    "label": "Save critical urgency to history",
+    "description": "Save critical priority notifications to history.",
+    "widget": "NToggle",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 2,
+    "subTabLabel": "History"
+  },
+  {
+    "label": "Notification sounds unavailable",
+    "description": "Install Qt6 Multimedia to enable notification sounds.",
+    "widget": "NLabel",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 3,
+    "subTabLabel": "Sound"
+  },
+  {
+    "label": "Enable notification sounds",
+    "description": "Enable sound effects for incoming notifications.",
+    "widget": "NToggle",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 3,
+    "subTabLabel": "Sound"
+  },
+  {
+    "label": "Sound volume",
+    "description": "Adjust the volume level for notification sounds.",
+    "widget": "NValueSlider",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 3,
+    "subTabLabel": "Sound"
+  },
+  {
+    "label": "Use different sounds per priority",
+    "description": "Use different sound files for low, normal, and critical priority notifications.",
+    "widget": "NToggle",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 3,
+    "subTabLabel": "Sound"
+  },
+  {
+    "label": "Notification sound",
+    "description": "Path to the sound file played for notifications.",
+    "widget": "NLabel",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 3,
+    "subTabLabel": "Sound"
+  },
+  {
+    "label": "Low urgency sound",
+    "description": "Path to the sound file played for low priority notifications.",
+    "widget": "NLabel",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 3,
+    "subTabLabel": "Sound"
+  },
+  {
+    "label": "Normal urgency sound",
+    "description": "Path to the sound file played for normal priority notifications.",
+    "widget": "NLabel",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 3,
+    "subTabLabel": "Sound"
+  },
+  {
+    "label": "Critical urgency sound",
+    "description": "Path to the sound file played for critical priority notifications.",
+    "widget": "NLabel",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 3,
+    "subTabLabel": "Sound"
+  },
+  {
+    "label": "Excluded applications",
+    "description": "Skip playing the configured notification sound for specific applications that have their own built-in sounds.",
+    "widget": "NLabel",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 3,
+    "subTabLabel": "Sound"
+  },
+  {
+    "label": "Media",
+    "description": "Show a toast when media playback state changes.",
+    "widget": "NCheckbox",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 4,
+    "subTabLabel": "Toast"
+  },
+  {
+    "label": "Keyboard layout",
+    "description": "Show a toast when the keyboard layout changes.",
+    "widget": "NCheckbox",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 4,
+    "subTabLabel": "Toast"
+  },
+  {
+    "label": "Battery warning",
+    "description": "Show a warning when the battery level falls below this percentage.",
+    "widget": "NCheckbox",
+    "tab": 9,
+    "tabLabel": "Notifications",
+    "subTab": 4,
+    "subTabLabel": "Toast"
+  },
+  {
+    "label": "Enable on-screen display",
+    "description": "Show volume and brightness changes in real-time.",
+    "widget": "NToggle",
+    "tab": 10,
+    "tabLabel": "Osd",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Auto-hide after",
+    "description": "Adjust the time before OSD disappears.",
+    "widget": "NValueSlider",
+    "tab": 10,
+    "tabLabel": "Osd",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Use analog style clock",
+    "description": "Show an analog style clock on the calendar window.",
+    "widget": "NToggle",
+    "tab": 16,
+    "tabLabel": "Region",
+    "subTab": 2,
+    "subTabLabel": "Calendar Panel"
+  },
+  {
+    "label": "Show week numbers",
+    "description": "Display the week of the year (e.g. week 38) in the calendar.",
+    "widget": "NToggle",
+    "tab": 16,
+    "tabLabel": "Region",
+    "subTab": 2,
+    "subTabLabel": "Calendar Panel"
+  },
+  {
+    "label": "Show calendar events",
+    "description": "Display events in the calendar panel.",
+    "widget": "NToggle",
+    "tab": 16,
+    "tabLabel": "Region",
+    "subTab": 2,
+    "subTabLabel": "Calendar Panel"
+  },
+  {
+    "label": "Use 12-hour time format",
+    "description": "Display time in 12-hour format on the lock screen and calendar. The bar clock has its own settings.",
+    "widget": "NToggle",
+    "tab": 16,
+    "tabLabel": "Region",
+    "subTab": 1,
+    "subTabLabel": "Date"
+  },
+  {
+    "label": "First day of week",
+    "description": "Choose which day starts the week in the calendar.",
+    "widget": "NComboBox",
+    "tab": 16,
+    "tabLabel": "Region",
+    "subTab": 1,
+    "subTabLabel": "Date"
+  },
+  {
+    "label": "Application language",
+    "description": "Select the language used in the application's interface.",
+    "widget": "NComboBox",
+    "tab": 16,
+    "tabLabel": "Region",
+    "subTab": 0,
+    "subTabLabel": "Location"
+  },
+  {
+    "label": "Search for a location",
+    "description": "e.g. Toronto, ON",
+    "widget": "NTextInput",
+    "tab": 16,
+    "tabLabel": "Region",
+    "subTab": 0,
+    "subTabLabel": "Location"
+  },
+  {
+    "label": "Enable weather",
+    "description": "Show weather information throughout the interface and fetch weather data. When disabled, all weather elements will be hidden and no network requests will be made.",
+    "widget": "NToggle",
+    "tab": 16,
+    "tabLabel": "Region",
+    "subTab": 0,
+    "subTabLabel": "Location"
+  },
+  {
+    "label": "Display temperature in Fahrenheit (\u00b0F)",
+    "description": "Display temperature in Fahrenheit instead of Celsius.",
+    "widget": "NToggle",
+    "tab": 16,
+    "tabLabel": "Region",
+    "subTab": 0,
+    "subTabLabel": "Location"
+  },
+  {
+    "label": "Display weather effects",
+    "description": "Show additional visual effects (like rain, snow, or lightning) on the weather card.",
+    "widget": "NToggle",
+    "tab": 16,
+    "tabLabel": "Region",
+    "subTab": 0,
+    "subTabLabel": "Location"
+  },
+  {
+    "label": "Hide city name",
+    "description": "Hide the city name from weather displays throughout the interface.",
+    "widget": "NToggle",
+    "tab": 16,
+    "tabLabel": "Region",
+    "subTab": 0,
+    "subTabLabel": "Location"
+  },
+  {
+    "label": "Hide timezone",
+    "description": "Hide the timezone abbreviation from weather displays throughout the interface.",
+    "widget": "NToggle",
+    "tab": 16,
+    "tabLabel": "Region",
+    "subTab": 0,
+    "subTabLabel": "Location"
+  },
+  {
+    "label": "Large buttons style",
+    "description": "Display the session menu with large buttons in a grid layout.",
+    "widget": "NToggle",
+    "tab": 12,
+    "tabLabel": "Session Menu",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Large buttons layout",
+    "description": "Choose how session menu buttons are displayed.",
+    "widget": "NComboBox",
+    "tab": 12,
+    "tabLabel": "Session Menu",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Show header",
+    "description": "Display the title and close button at the top of the session menu.",
+    "widget": "NToggle",
+    "tab": 12,
+    "tabLabel": "Session Menu",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Show keybinds",
+    "description": "Display keybind hints on session options.",
+    "widget": "NToggle",
+    "tab": 12,
+    "tabLabel": "Session Menu",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Enable discrete GPU monitoring",
+    "description": "Warning: This will wake up your discrete GPU (NVIDIA/AMD), which may significantly impact battery life on laptops with hybrid graphics.",
+    "widget": "NToggle",
+    "tab": 17,
+    "tabLabel": "System Monitor",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Use custom highlight colors",
+    "description": "When disabled, theme default highlight colors are used.",
+    "widget": "NToggle",
+    "tab": 17,
+    "tabLabel": "System Monitor",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "External system monitor command",
+    "description": "Enter the command or application path to launch when activating the external system monitor application.",
+    "widget": "NTextInput",
+    "tab": 17,
+    "tabLabel": "System Monitor",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Show tooltips",
+    "description": "Enable or disable tooltips throughout the interface.",
+    "widget": "NToggle",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Container outline",
+    "description": "Display an outline around content areas.",
+    "widget": "NToggle",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Drop shadows",
+    "description": "Enables drop shadows under bars and panels.",
+    "widget": "NToggle",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Shadow direction",
+    "description": "Choose where the shadow is cast to.",
+    "widget": "NComboBox",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Interface scaling",
+    "description": "Changes the size of the general user interface, excluding the bar.",
+    "widget": "NValueSlider",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Container radius",
+    "description": "Adjusts the corner roundness of major layout sections, such as sidebars, cards, and content panels.",
+    "widget": "NValueSlider",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Input radius",
+    "description": "Controls the curvature of interactive elements, including buttons, toggles, and text fields.",
+    "widget": "NValueSlider",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Disable UI animations",
+    "description": "Disable all animations for a faster, more responsive experience.",
+    "widget": "NToggle",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Animation speed",
+    "description": "Adjust global animation speed.",
+    "widget": "NValueSlider",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 0,
+    "subTabLabel": "Appearance"
+  },
+  {
+    "label": "Snap panels to edges",
+    "description": "Panels lock to the bar and screen edges, creating a seamless look with stylish inverted corners.",
+    "widget": "NToggle",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 1,
+    "subTabLabel": "Panels"
+  },
+  {
+    "label": "Allow panels on screens without a bar",
+    "description": "When enabled, panels can open on any screen. When disabled, panels will only open on screens that have a bar, which can reduce memory usage.",
+    "widget": "NToggle",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 1,
+    "subTabLabel": "Panels"
+  },
+  {
+    "label": "Panel background opacity",
+    "description": "Set the background opacity for all panels (bar, launcher, settings, etc...).",
+    "widget": "NValueSlider",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 1,
+    "subTabLabel": "Panels"
+  },
+  {
+    "label": "Dimmed desktop opacity",
+    "description": "Set the opacity level for desktop dimming.",
+    "widget": "NValueSlider",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 1,
+    "subTabLabel": "Panels"
+  },
+  {
+    "label": "Settings panel mode",
+    "description": "Choose settings layout (may require reopening).",
+    "widget": "NComboBox",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 1,
+    "subTabLabel": "Panels"
+  },
+  {
+    "label": "Sidebar card style",
+    "description": "Wraps the settings sidebar in a filled background with rounded corners.",
+    "widget": "NToggle",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 1,
+    "subTabLabel": "Panels"
+  },
+  {
+    "label": "Show screen corners",
+    "description": "Display rounded corners on the edge of the screen.",
+    "widget": "NToggle",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 2,
+    "subTabLabel": "Screen Corners"
+  },
+  {
+    "label": "Solid black corners",
+    "description": "Use solid black instead of the bar background color.",
+    "widget": "NToggle",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 2,
+    "subTabLabel": "Screen Corners"
+  },
+  {
+    "label": "Screen corners radius",
+    "description": "Adjust the rounded corners of the screen.",
+    "widget": "NValueSlider",
+    "tab": 1,
+    "tabLabel": "User Interface",
+    "subTab": 2,
+    "subTabLabel": "Screen Corners"
+  },
+  {
+    "label": "Scheduled change",
+    "description": "Automatically change wallpapers at regular intervals.",
+    "widget": "NToggle",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 2,
+    "subTabLabel": "Automation"
+  },
+  {
+    "label": "Change mode",
+    "description": "Choose how wallpapers are selected when changing automatically.",
+    "widget": "NComboBox",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 2,
+    "subTabLabel": "Automation"
+  },
+  {
+    "label": "Wallpaper interval",
+    "description": "How often to change wallpapers automatically.",
+    "widget": "NLabel",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 2,
+    "subTabLabel": "Automation"
+  },
+  {
+    "label": "Custom interval",
+    "description": "Enter time as HH:MM (e.g. 01:30).",
+    "widget": "NTextInput",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 2,
+    "subTabLabel": "Automation"
+  },
+  {
+    "label": "Enable wallpaper management",
+    "description": "Manage wallpapers with CrawlDS. Uncheck if you prefer using another application.",
+    "widget": "NToggle",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Wallpaper selector",
+    "description": "Choose your wallpaper.",
+    "widget": "NLabel",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Viewing mode",
+    "description": "Choose how wallpapers are displayed from your directory.",
+    "widget": "NComboBox",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Wallpaper folder",
+    "description": "Path to your main wallpaper folder.",
+    "widget": "NTextInputButton",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Monitor-specific directories",
+    "description": "Set a different wallpaper folder for each monitor.",
+    "widget": "NToggle",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Enable overview wallpaper",
+    "description": "Applies a blurred and dimmed wallpaper to the overview screen.",
+    "widget": "NToggle",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Overview blur strength",
+    "description": "Applies the blur strength to the overview.",
+    "widget": "NValueSlider",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Overview tint strength",
+    "description": "Applies the tint strength to the overview.",
+    "widget": "NValueSlider",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 0,
+    "subTabLabel": "General"
+  },
+  {
+    "label": "Fill mode",
+    "description": "Select how the image should scale to match your monitor's resolution.",
+    "widget": "NComboBox",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 1,
+    "subTabLabel": "Look"
+  },
+  {
+    "label": "Fill color",
+    "description": "Choose a fill color that may appear behind the wallpaper.",
+    "widget": "NLabel",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 1,
+    "subTabLabel": "Look"
+  },
+  {
+    "label": "Transition type",
+    "description": "Animation type when switching between wallpapers.",
+    "widget": "NComboBox",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 1,
+    "subTabLabel": "Look"
+  },
+  {
+    "label": "Skip startup transition",
+    "description": "Skip the wallpaper animation when the shell starts.",
+    "widget": "NToggle",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 1,
+    "subTabLabel": "Look"
+  },
+  {
+    "label": "Transition duration",
+    "description": "Duration of transition animations in seconds.",
+    "widget": "NValueSlider",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 1,
+    "subTabLabel": "Look"
+  },
+  {
+    "label": "Soften transition edge",
+    "description": "Applies a soft, feathered effect to the edge of transitions.",
+    "widget": "NValueSlider",
+    "tab": 3,
+    "tabLabel": "Wallpaper",
+    "subTab": 1,
+    "subTabLabel": "Look"
+  }
+]

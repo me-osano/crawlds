@@ -1,0 +1,180 @@
+{
+  "version": "1.0",
+  "name": "Minipanel",
+  "description": "Small Panel at the top some would say mini",
+  "timestamp": "2026-02-25T06:43:45.979Z",
+  "topBar": {
+    "visible": false,
+    "position": "top",
+    "float": false,
+    "roundedCorners": false,
+    "cornerRadius": 12,
+    "iconSize": 24,
+    "iconSpacing": 2,
+    "widgets": {
+      "left": [
+        "launcherButton",
+        {
+          "id": "mediaDisplay",
+          "enabled": true
+        }
+      ],
+      "center": [
+        {
+          "id": "workspaceSwitcher",
+          "enabled": true
+        }
+      ],
+      "right": [
+        {
+          "id": "systemTray",
+          "enabled": true
+        },
+        {
+          "id": "weather",
+          "enabled": true
+        },
+        {
+          "id": "clock",
+          "enabled": true
+        },
+        {
+          "id": "controlCenterButton",
+          "enabled": true
+        }
+      ]
+    }
+  },
+  "dock": {
+    "visible": false,
+    "widgetsEnabled": true,
+    "position": "bottom",
+    "expandToScreen": false,
+    "iconSize": 40,
+    "iconSpacing": 3,
+    "pinnedAppsIconSize": 40,
+    "pinnedAppsIconSpacing": 3,
+    "widgets": {
+      "left": [
+        {
+          "id": "launcherButton",
+          "enabled": true
+        },
+        {
+          "id": "workspaceSwitcher",
+          "enabled": true
+        },
+        {
+          "id": "music",
+          "enabled": true
+        }
+      ],
+      "center": [
+        {
+          "id": "launchpad",
+          "enabled": true
+        },
+        {
+          "id": "pinnedApps",
+          "enabled": true
+        },
+        {
+          "id": "trash",
+          "enabled": true
+        }
+      ],
+      "right": [
+        {
+          "id": "systemTray",
+          "enabled": true
+        },
+        {
+          "id": "weather",
+          "enabled": true
+        },
+        {
+          "id": "clock",
+          "enabled": true
+        },
+        {
+          "id": "controlCenterButton",
+          "enabled": true
+        },
+        {
+          "id": "settingsButton",
+          "enabled": true
+        },
+        {
+          "id": "volumeMixerButton",
+          "enabled": true
+        }
+      ]
+    }
+  },
+  "taskBar": {
+    "visible": false,
+    "float": false,
+    "roundedCorners": false,
+    "cornerRadius": 32,
+    "iconSize": 30,
+    "iconSpacing": 2,
+    "widgets": {
+      "left": [
+        {
+          "id": "launcherButton",
+          "enabled": true
+        },
+        {
+          "id": "workspaceSwitcher",
+          "enabled": true
+        },
+        {
+          "id": "mediaDisplay",
+          "enabled": true
+        }
+      ],
+      "center": [
+        {
+          "id": "pinnedApps",
+          "enabled": true
+        },
+        {
+          "id": "separator",
+          "enabled": true
+        }
+      ],
+      "right": [
+        "systemTray",
+        "weather",
+        "clock",
+        "controlCenterButton",
+        "systemUpdate"
+      ]
+    }
+  },
+  "miniPanel": {
+    "visible": true,
+    "position": "top",
+    "height": 48,
+    "scale": 1,
+    "widgets": {
+      "left": [
+        "launcherButton",
+        "workspaceSwitcher",
+        "windowPreview"
+      ],
+      "center": [
+        "music"
+      ],
+      "right": [
+        "systemTray",
+        "clock",
+        "notificationButton",
+        "controlCenterButton"
+      ]
+    }
+  },
+  "global": {
+    "cornerRadius": 32
+  }
+}

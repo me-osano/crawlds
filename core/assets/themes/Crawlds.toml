@@ -1,0 +1,96 @@
+[metadata]
+name              = "Crawlds"
+author            = "MOE"
+isDark            = true
+
+[dark]
+primary           = "#C05A1A"
+onPrimary         = "#FDF0E6"
+secondary         = "#D4832A"
+onSecondary       = "#17130F"
+tertiary          = "#1D9E75"
+onTertiary        = "#E1F5EE"
+error             = "#A02020"
+onError           = "#FCEBEB"
+surface           = "#1E1A16"
+onSurface         = "#E0CFBB"
+surfaceVariant    = "#2A221C"
+onSurfaceVariant  = "#A89888"
+outline           = "#4A3D32"
+shadow            = "#17130F"
+hover             = "#E08040"
+onHover           = "#17130F"
+
+[dark.terminal]
+foreground        = "#E0CFBB"
+background        = "#17130F"
+selectionFg       = "#17130F"
+selectionBg       = "#E0CFBB"
+cursorText        = "#17130F"
+cursor            = "#C05A1A"
+
+[dark.terminal.normal]
+black             = "#2A221C"
+red               = "#A02020"
+green             = "#1D9E75"
+yellow            = "#C9961A"
+blue              = "#C05A1A"
+magenta           = "#8C3A0C"
+cyan              = "#1D9E75"
+white             = "#E0CFBB"
+
+[dark.terminal.bright]
+black             = "#4A3D32"
+red               = "#C02828"
+green             = "#26B885"
+yellow            = "#D4A830"
+blue              = "#E08040"
+magenta           = "#C05A1A"
+cyan              = "#26B885"
+white             = "#F5EDE3"
+
+[light]
+primary           = "#8C3A0C"
+onPrimary         = "#FDF0E6"
+secondary         = "#C05A1A"
+onSecondary       = "#FDF0E6"
+tertiary          = "#0F6E56"
+onTertiary        = "#E1F5EE"
+error             = "#A02020"
+onError           = "#FDF0E6"
+surface           = "#F5EDE3"
+onSurface         = "#2A0E03"
+surfaceVariant    = "#EDE0D0"
+onSurfaceVariant  = "#8C3A0C"
+outline           = "#C8906A"
+shadow            = "#E0C8B0"
+hover             = "#4E1D06"
+onHover           = "#FDF0E6"
+
+[light.terminal]
+foreground        = "#2A0E03"
+background        = "#F5EDE3"
+selectionFg       = "#F5EDE3"
+selectionBg       = "#2A0E03"
+cursorText        = "#F5EDE3"
+cursor            = "#8C3A0C"
+
+[light.terminal.normal]
+black             = "#EDE0D0"
+red               = "#A02020"
+green             = "#0F6E56"
+yellow            = "#854F0B"
+blue              = "#8C3A0C"
+magenta           = "#4E1D06"
+cyan              = "#0F6E56"
+white             = "#2A0E03"
+
+[light.terminal.bright]
+black             = "#C8906A"
+red               = "#C02828"
+green             = "#1D9E75"
+yellow            = "#BA7517"
+blue              = "#C05A1A"
+magenta           = "#8C3A0C"
+cyan              = "#1D9E75"
+white             = "#4A1E04"

@@ -1,0 +1,152 @@
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import Quickshell
+import qs.Common
+import qs.Widgets
+
+ColumnLayout {
+  id: root
+  spacing: 0
+
+  // Helper functions to update arrays immutably
+  function addMonitor(list, name) {
+    const arr = (list || []).slice();
+    if (!arr.includes(name))
+      arr.push(name);
+    return arr;
+  }
+  function removeMonitor(list, name) {
+    return (list || []).filter(function (n) {
+      return n !== name;
+    });
+  }
+
+  // File pickers for sound sub-tab
+  function openUnifiedSoundPicker() {
+    unifiedSoundFilePicker.open();
+  }
+  function openLowSoundPicker() {
+    lowSoundFilePicker.open();
+  }
+  function openNormalSoundPicker() {
+    normalSoundFilePicker.open();
+  }
+  function openCriticalSoundPicker() {
+    criticalSoundFilePicker.open();
+  }
+
+  NTabBar {
+    id: subTabBar
+    Layout.fillWidth: true
+    Layout.bottomMargin: Style.marginM
+    distributeEvenly: false // this is too cramped on this tab to split evenly
+    currentIndex: tabView.currentIndex
+
+    NTabButton {
+      text: "Appearance"
+      tabIndex: 0
+      checked: subTabBar.currentIndex === 0
+    }
+    NTabButton {
+      text: "Duration"
+      tabIndex: 1
+      checked: subTabBar.currentIndex === 1
+    }
+    NTabButton {
+      text: "History"
+      tabIndex: 2
+      checked: subTabBar.currentIndex === 2
+    }
+    NTabButton {
+      text: "Sound"
+      tabIndex: 3
+      checked: subTabBar.currentIndex === 3
+    }
+    NTabButton {
+      text: "Toast"
+      tabIndex: 4
+      checked: subTabBar.currentIndex === 4
+    }
+  }
+
+  Item {
+    Layout.fillWidth: true
+    Layout.preferredHeight: Style.marginL
+  }
+
+  NTabView {
+    id: tabView
+    currentIndex: subTabBar.currentIndex
+
+    GeneralSubTab {
+      addMonitor: root.addMonitor
+      removeMonitor: root.removeMonitor
+    }
+    DurationSubTab {}
+    HistorySubTab {}
+    SoundSubTab {
+      onOpenUnifiedPicker: root.openUnifiedSoundPicker()
+      onOpenLowPicker: root.openLowSoundPicker()
+      onOpenNormalPicker: root.openNormalSoundPicker()
+      onOpenCriticalPicker: root.openCriticalSoundPicker()
+    }
+    ToastSubTab {}
+  }
+
+  // File Pickers for Sound Files
+  NFilePicker {
+    id: unifiedSoundFilePicker
+    title: "Select notification sound file"
+    selectionMode: "files"
+    initialPath: Quickshell.env("HOME")
+    nameFilters: ["*.wav", "*.mp3", "*.ogg", "*.flac", "*.m4a", "*.aac"]
+    onAccepted: paths => {
+                  if (paths.length > 0) {
+                    const soundPath = paths[0];
+                    Settings.data.notifications.sounds.normalSoundFile = soundPath;
+                    Settings.data.notifications.sounds.lowSoundFile = soundPath;
+                    Settings.data.notifications.sounds.criticalSoundFile = soundPath;
+                  }
+                }
+  }
+
+  NFilePicker {
+    id: lowSoundFilePicker
+    title: "Select low urgency sound file"
+    selectionMode: "files"
+    initialPath: Quickshell.env("HOME")
+    nameFilters: ["*.wav", "*.mp3", "*.ogg", "*.flac", "*.m4a", "*.aac"]
+    onAccepted: paths => {
+                  if (paths.length > 0) {
+                    Settings.data.notifications.sounds.lowSoundFile = paths[0];
+                  }
+                }
+  }
+
+  NFilePicker {
+    id: normalSoundFilePicker
+    title: "Select normal urgency sound file"
+    selectionMode: "files"
+    initialPath: Quickshell.env("HOME")
+    nameFilters: ["*.wav", "*.mp3", "*.ogg", "*.flac", "*.m4a", "*.aac"]
+    onAccepted: paths => {
+                  if (paths.length > 0) {
+                    Settings.data.notifications.sounds.normalSoundFile = paths[0];
+                  }
+                }
+  }
+
+  NFilePicker {
+    id: criticalSoundFilePicker
+    title: "Select critical urgency sound file"
+    selectionMode: "files"
+    initialPath: Quickshell.env("HOME")
+    nameFilters: ["*.wav", "*.mp3", "*.ogg", "*.flac", "*.m4a", "*.aac"]
+    onAccepted: paths => {
+                  if (paths.length > 0) {
+                    Settings.data.notifications.sounds.criticalSoundFile = paths[0];
+                  }
+                }
+  }
+}

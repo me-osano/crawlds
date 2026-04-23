@@ -1,0 +1,21 @@
+[package]
+name = "crawlds-theme"
+description = "Theme loading and validation for CrawlDS"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+thiserror.workspace = true
+toml = "0.8"
+walkdir.workspace = true
+tracing.workspace = true
+
+[dependencies.crawlds-ipc]
+path = "../crawlds-ipc"
+
+[dev-dependencies]
+tokio.workspace = true

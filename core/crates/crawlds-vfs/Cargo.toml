@@ -1,0 +1,29 @@
+[package]
+name = "crawlds-vfs"
+description = "Virtual filesystem: disks, mounts, file search, file operations"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+crawlds-ipc    = { workspace = true }
+tokio        = { workspace = true }
+serde        = { workspace = true }
+serde_json   = { workspace = true }
+thiserror    = { workspace = true }
+tracing      = { workspace = true }
+zbus         = { workspace = true }
+futures-util = { workspace = true }
+anyhow       = { workspace = true }
+nix          = { workspace = true }
+walkdir      = { workspace = true }
+notify       = { workspace = true }
+notify-types = { workspace = true }
+infer        = { workspace = true }
+trash        = "5"
+tantivy      = "0.22"
+sled         = "0.34"
+
+[dev-dependencies]
+tempfile = "3"

@@ -1,0 +1,122 @@
+# crawlds full configuration
+# This file contains all daemon/ backend config
+# Location: $XDG_CONFIG_HOME/crawlds/core.toml
+
+# ── Daemon ────────────────────────────────────────────────────────────────────
+[daemon]
+socket_path = ""
+tcp_addr = ""
+log_level = "info"
+
+# ── Greeter (greetd) ─────────────────────────────────────────────────────────
+[greeter]
+greetd_socket = "/run/greetd.sock"
+session_ttl_secs = 60
+
+# ── Bluetooth ─────────────────────────────────────────────────────────────────
+[bluetooth]
+auto_power = false
+scan_timeout_secs = 30
+
+# ── Network ───────────────────────────────────────────────────────────────────
+[network]
+wifi_scan_on_start = false
+wifi_enabled = true
+ethernet_enabled = true
+hotspot_enabled = false
+hotspot_backend = "networkmanager"
+hotspot_virtual_iface = true
+
+# ── Notifications ─────────────────────────────────────────────────────────────
+[notifications]
+replace_daemon = true
+default_timeout_ms = 5000
+max_store = 200
+enabled = true
+sounds = true
+urgency = true
+
+# ── Clipboard ─────────────────────────────────────────────────────────────────
+[clipboard]
+history_size = 50
+watch_primary = false
+poll_interval_ms = 500
+history_enabled = true
+
+# ── System Monitor ────────────────────────────────────────────────────────────
+[sysmon]
+poll_interval_ms = 1000
+cpu_spike_threshold = 90.0
+mem_pressure_threshold = 85.0
+
+# ── Brightness ─────────────────────────────────────────────────────────────
+[brightness]
+device = ""
+min_percent = 1.0
+max_percent = 100.0
+
+# ── Processes ─────────────────────────────────────────────────────────────────
+[processes]
+default_sort = "cpu"
+default_top = 30
+
+# ── Power ─────────────────────────────────────────────────────────────────────
+[power]
+low_battery_threshold = 20.0
+critical_threshold = 5.0
+profile = "balanced"
+battery_show_percent = true
+battery_threshold_low = 20
+battery_threshold_critical = 10
+
+# ── Idle ─────────────────────────────────────────────────────────────────��─────
+[idle]
+idle_timeout_secs = 300
+dim_timeout_secs = 60
+sleep_timeout_secs = 600
+screen_off_timeout_secs = 600
+lock_timeout_secs = 660
+suspend_timeout_secs = 1800
+fade_duration_secs = 5
+screen_off_command = ""
+lock_command = ""
+suspend_command = ""
+
+# ── Disk ──────────────────────────────────────────────────────────────────────
+[disk]
+removable_only = false
+auto_mount = false
+
+# ── Theme ──────────────────────────────────────────────────────────────────────────
+[theme]
+default_scheme = "tonal-spot"   # vibrant, tonal-spot, excited, rainbow
+default_mode = "dark"          # dark, light
+auto_generate = true
+cache_dir = ""
+
+# ── Geolocation ──────────────────────────────────────────────────────────────
+[geolocation]
+app_id = "crawlds"
+accuracy_m = 1000.0
+poll_interval_secs = 30
+weather_enabled = true
+provider = "open-meteo"
+units = "metric"
+refresh_interval_mins = 30
+
+# ── Webservice (RSS & Wallhaven) ─────────────────────────────────────────────
+[webservice]
+rss_enabled = true
+wallhaven_api_key = ""
+
+[webservice.rss]
+enabled = true
+poll_interval_secs = 300
+user_agent = "crawlds/0.1"
+timeout_secs = 10
+feeds = []
+
+[webservice.wallhaven]
+api_key = ""
+default_purity = ["sfw"]
+default_categories = "111"

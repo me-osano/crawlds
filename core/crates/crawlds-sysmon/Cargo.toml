@@ -1,0 +1,18 @@
+[package]
+name = "crawlds-sysmon"
+description = "CPU, memory and disk monitoring via sysinfo"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+crawlds-ipc     = { workspace = true }
+crawlds-scheduler = { path = "../crawlds-scheduler" }
+tokio          = { workspace = true }
+serde          = { workspace = true }
+thiserror      = { workspace = true }
+tracing        = { workspace = true }
+sysinfo        = { version = "0.31", features = ["apple-app-store"] }
+anyhow         = { workspace = true }
+

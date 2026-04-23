@@ -1,0 +1,32 @@
+[package]
+name = "crawlds-cli"
+description = "crawlds CLI client — talk to crawlds-daemon over Unix socket"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "crawlds"
+path = "src/main.rs"
+
+[dependencies]
+crawlds-ipc  = { workspace = true }
+tokio      = { workspace = true }
+clap       = { workspace = true }
+serde      = { workspace = true }
+serde_json = { workspace = true }
+anyhow     = { workspace = true }
+color-eyre = { workspace = true }
+tracing    = { workspace = true }
+tracing-subscriber = { workspace = true }
+hyper        = { workspace = true }
+hyper-util   = { workspace = true }
+http-body-util = { workspace = true }
+futures-util = { workspace = true }
+libc        = "0.2"
+urlencoding = "2.1"
+shellexpand = "3.1"
+nix = { version = "0.27", features = ["process", "signal", "user"] }
+signal-hook = "0.3"
+which = "5"
