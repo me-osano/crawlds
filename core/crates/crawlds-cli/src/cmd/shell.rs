@@ -183,7 +183,7 @@ fn exec_detached_restart(target_pid: i32) {
 fn get_config_path() -> String {
     env::var("CRAWLDS_CONFIG_PATH").unwrap_or_else(|_| {
         if let Ok(home) = env::var("HOME") {
-            format!("{}/.config/quickshell/crawlds", home)
+            format!("{}/.config/quickshell/crawldesktopshell", home)
         } else {
             String::new()
         }
@@ -249,7 +249,7 @@ fn build_qs_env(socket_path: &str, config_path: &str) -> Vec<(String, String)> {
 
 #[derive(Parser)]
 pub struct RunArgs {
-    #[arg(long, short = 'c', default_value = "~/.config/quickshell/crawlds")]
+    #[arg(long, short = 'c', default_value = "~/.config/quickshell/crawldesktopshell")]
     pub config: String,
 
     #[arg(short = 'd')]

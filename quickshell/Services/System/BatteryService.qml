@@ -6,6 +6,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.UPower
 import qs.Common
+import qs.Services.Core
 import qs.Services.UI
 
 Singleton {
@@ -53,7 +54,7 @@ Singleton {
     var model = [
       {
         "key": "__default__",
-        "name": "Default (Display Device)"
+        "name": "bar.battery.device-default"
       }
     ];
     const devices = UPower.devices?.values || [];
@@ -63,7 +64,7 @@ Singleton {
       }
       model.push({
                    key: d.nativePath || "",
-                   name: d.model || d.nativePath || "Unknown"
+                   name: d.model || d.nativePath || "common.unknown"
                  });
     }
     return model;
@@ -188,16 +189,16 @@ Singleton {
       // Logger.e("BatteryDebug", "Available Battery count: " + laptopBatteries.length); // can be useful for debugging
       if (laptopBatteries.length > 1 && device.nativePath) {
         if (device.nativePath === "DisplayDevice") {
-          return "All batteries (combined)";
+          return "battery.all-batteries";
         }
         var match = device.nativePath.match(/(\d+)$/);
         if (match) {
           // In case of 2 batteries: bat0 => bat1  bat1 => bat2
-          return "Battery" + " " + (parseInt(match[1]) + 1);  // Append numbers
+          return "common.battery" + " " + (parseInt(match[1]) + 1);  // Append numbers
         }
       }
       // Return Battery if there is only one
-      return "Battery";
+      return "common.battery";
     }
 
     if (isBluetoothDevice(device) && device.name) {
@@ -253,26 +254,34 @@ Singleton {
     if (!device || device.changeRate === undefined) {
       return "";
     }
-    const rate = Math.abs(device.changeRate).toFixed(2);
+    const rate = Math.abs(device.changeRate);
     if (device.timeToFull > 0) {
-      return `Charging rate: ${rate} W`;
+      return "battery.charging-rate", {
+                       "rate": rate.toFixed(2)
+                     };
     } else if (device.timeToEmpty > 0) {
-      return `Discharging rate: ${rate} W`;
+      return "battery.discharging-rate", {
+                       "rate": rate.toFixed(2)
+                     };
     }
   }
 
   function getTimeRemainingText(device) {
     if (!isDeviceReady(device)) {
-      return "No battery detected";
+      return "battery.no-battery-detected";
     }
     if (isPluggedIn(device)) {
-      return "Plugged in";
+      return "battery.plugged-in";
     } else if (device.timeToFull > 0) {
-      return `Time until full: ${Time.formatVagueHumanReadableDuration(device.timeToFull)}`;
+      return "battery.time-until-full", {
+                       "time": Time.formatVagueHumanReadableDuration(device.timeToFull)
+                     };
     } else if (device.timeToEmpty > 0) {
-      return `Time left: ${Time.formatVagueHumanReadableDuration(device.timeToEmpty)}`;
+      return "battery.time-left", {
+                       "time": Time.formatVagueHumanReadableDuration(device.timeToEmpty)
+                     };
     }
-    return "Idle";
+    return "common.idle";
   }
 
   function checkDevice(device) {
@@ -321,10 +330,10 @@ Singleton {
     var titleKey = level === "critical" ? "toast.battery.critical" : "toast.battery.low";
     var descKey = level === "critical" ? "toast.battery.critical-desc" : "toast.battery.low-desc";
 
-    // Battery percentage in title and description for better clarity, especially when multiple batteries are present.
-    var pct = getPercentage(device);
-    var title = (level === "critical") ? "Battery critical" : "Battery low";
-    var desc = (level === "critical") ? ("Battery critically low: " + pct + "%") : ("Battery low: " + pct + "%");
+    var title = titleKey;
+    var desc = descKey, {
+                         "percent": getPercentage(device)
+                       };
     var icon = level === "critical" ? "battery-exclamation" : "battery-charging-2";
 
     if (device == _bluetoothBattery && name) {

@@ -6,6 +6,7 @@ import Quickshell.Services.UPower
 import qs.Common
 import qs.Modules.Bar.Extras
 import qs.Services.Core
+import qs.Services.System
 import qs.Services.UI
 import qs.Widgets
 

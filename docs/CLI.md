@@ -61,7 +61,7 @@ crawlds run [OPTIONS] [-- <ARGS>...]
 
 | Option | Description |
 |--------|-------------|
-| `-c, --config <PATH>` | Quickshell config directory (default: `~/.config/quickshell/crawlds`) |
+| `-c, --config <PATH>` | Quickshell config directory (default: `~/.config/quickshell/crawldesktopshell`) |
 | `-d` | Run as daemon |
 
 **Examples:**
