@@ -66,9 +66,9 @@ install_choice() {
     log_step "Select $prompt:"
     local choice
     if command -v gum >/dev/null; then
-        choice=$(gum choose "$@" "skip")
+        choice=$(gum choose "$@")
     else
-        options=("$@" "skip")
+        options=("$@")
         for i in "${!options[@]}"; do
             echo "$((i+1))) ${options[$i]}"
         done
@@ -86,8 +86,6 @@ install_choice() {
     if [[ "$choice" != "skip" ]]; then
         log_info "Installing $choice..."
         sudo pacman -S --needed "$choice"
-        # niri needs xwayland-satellite alongside it
-        [[ "$choice" == "niri" ]] && sudo pacman -S --needed xwayland-satellite
     fi
 }
 
@@ -139,6 +137,11 @@ install_daemon() {
 # ======== Setup Quickshell ========
 install_quickshell() {
     log_info "Installing Crawl Desktop Shell(Quickshell)..."
+
+    if [[ ! -d "$TMP_DIR/quickshell" ]]; then
+        log_error "Quickshell directory not found in repository"
+        exit 1
+    fi
 
     if command -v qs >/dev/null; then
         log_info "Installing Quickshell UI..."
