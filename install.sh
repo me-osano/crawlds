@@ -39,7 +39,7 @@ setup_temp_source() {
         sudo pacman -S --needed git
     fi
     
-    git clone --depth 1 "$SOURCE_URL" "$TMP_DIR" >/dev/null 2>&1 || {
+    git clone --depth 1 "$SOURCE_URL" "$TMP_DIR" || {
         log_error "Failed to clone repository"
         exit 1
     }
@@ -51,11 +51,10 @@ cleanup() {
 trap cleanup EXIT
 
 # =========== Install dependencies ===============
-install_deps() {    
-    log_info "Installing dependencies..."
+install_deps() {
     if command -v pacman >/dev/null; then
         log_info "Installing dependencies..."
-        sudo pacman -S --needed rustup quickshell qt6ct qt6-multimedia imagemagick gum
+        sudo pacman -S --needed --noconfirm rustup quickshell qt6ct qt6-multimedia imagemagick gum
     else
         log_info "Install dependencies manually: git rust quickshell imagemagick"
     fi
@@ -85,7 +84,7 @@ install_choice() {
     
     if [[ "$choice" != "skip" ]]; then
         log_info "Installing $choice..."
-        sudo pacman -S --needed "$choice"
+        sudo pacman -S --needed --noconfirm "$choice"
     fi
 }
 
