@@ -1,6 +1,8 @@
 use crate::config::Config;
+use crawlds_display::WallpaperService;
 use crawlds_greeter::GreeterManager;
 use crawlds_ipc::CrawlEvent;
+use crawlds_system::SystemService;
 use crawlds_theme::ThemeManager;
 use crawlds_webservice::WebserviceState;
 use std::collections::VecDeque;
@@ -135,7 +137,7 @@ impl ClipboardStore {
     }
 }
 
-/// Shared application state — cloned into every axum handler via `.with_state()`.
+/// Shared application state
 #[derive(Clone)]
 pub struct AppState {
     pub config: Arc<Config>,
@@ -145,6 +147,8 @@ pub struct AppState {
     pub clipboard_store: Arc<ClipboardStore>,
     pub webservice_store: Arc<WebserviceState>,
     pub theme_manager: Arc<Mutex<ThemeManager>>,
+    pub wallpaper_service: Arc<WallpaperService>,
+    pub system_service: Arc<SystemService>,
 }
 
 impl AppState {
@@ -165,6 +169,13 @@ impl AppState {
         let cache_dir = config.cache_dir.clone();
         let theme_manager = Arc::new(Mutex::new(ThemeManager::new(themes_dir, cache_dir)));
 
+        let wallpaper_service = Arc::new(WallpaperService::new(
+            event_tx.clone(),
+            config.wallpaper.clone(),
+        ));
+
+        let system_service = Arc::new(SystemService::new());
+
         Self {
             config: Arc::new(config),
             event_tx,
@@ -176,6 +187,8 @@ impl AppState {
             )),
             webservice_store,
             theme_manager,
+            wallpaper_service,
+            system_service,
         }
     }
 }

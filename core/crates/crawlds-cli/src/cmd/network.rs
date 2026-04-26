@@ -1,4 +1,3 @@
-// cmd/network.rs
 use anyhow::Result;
 use clap::Args;
 use serde_json::json;
@@ -46,7 +45,7 @@ pub struct NetArgs {
 pub async fn run(client: CrawlClient, args: NetArgs, json: bool) -> Result<()> {
     if let Some(power) = args.power.as_deref() {
         let enabled = matches!(power, "on" | "true" | "1");
-        let res = client.post("/network/power", json!({ "on": enabled })).await?;
+        let res = client.cmd("NetPower", json!({ "on": enabled })).await?;
         if json {
             output::print_value(&res, true);
         } else {
@@ -54,9 +53,7 @@ pub async fn run(client: CrawlClient, args: NetArgs, json: bool) -> Result<()> {
         }
     } else if args.hotspot {
         if args.connect {
-            let ssid = args.ssid.clone().unwrap_or_else(|| {
-                "CrawlDS-Hotspot".to_string()
-            });
+            let ssid = args.ssid.clone().unwrap_or_else(|| "CrawlDS-Hotspot".to_string());
             let mut payload = json!({ "ssid": ssid });
             if let Some(ref pwd) = args.password {
                 payload["password"] = json!(pwd);
@@ -70,7 +67,7 @@ pub async fn run(client: CrawlClient, args: NetArgs, json: bool) -> Result<()> {
             if let Some(ref be) = args.backend {
                 payload["backend"] = json!(be);
             }
-            let res = client.post("/network/hotspot/start", payload).await?;
+            let res = client.cmd("NetHotspotStart", payload).await?;
             if json {
                 output::print_value(&res, true);
             } else {
@@ -79,70 +76,57 @@ pub async fn run(client: CrawlClient, args: NetArgs, json: bool) -> Result<()> {
                 output::print_ok(&format!("Hotspot started: '{ssid_out}' on {iface_out}"));
             }
         } else if args.disconnect {
-            let res = client.post("/network/hotspot/stop", json!({})).await?;
+            let res = client.cmd("NetHotspotStop", json!({})).await?;
             if json {
                 output::print_value(&res, true);
             } else {
                 output::print_ok("Hotspot stopped");
             }
         } else {
-            let res = client.get("/network/hotspot/status").await?;
+            let res = client.cmd("NetHotspotStatus", json!({})).await?;
             output::print_value(&res, json);
         }
     } else if args.wifi {
         if args.forget {
             let ssid = args.ssid.clone().unwrap_or_default();
-            let res = client.post("/network/wifi/forget", json!({ "ssid": ssid })).await?;
+            let res = client.cmd("NetWifiForget", json!({ "ssid": ssid })).await?;
             if json {
                 output::print_value(&res, true);
             } else {
                 output::print_ok(&format!("Network '{ssid}' forgotten"));
             }
         } else if args.scan {
-            let res = client.post("/network/wifi/scan", json!({})).await?;
+            let res = client.cmd("NetWifiScan", json!({})).await?;
             if json {
                 output::print_value(&res, true);
             } else {
                 output::print_ok("WiFi scan requested");
             }
         } else if args.details {
-            let res = client.get("/network/wifi/details").await?;
+            let res = client.cmd("NetWifiDetails", json!({})).await?;
             output::print_value(&res, json);
         } else if args.connect {
             let ssid = args.ssid.clone().unwrap_or_default();
-            let res = client
-                .post(
-                    "/network/wifi/connect",
-                    json!({ "ssid": ssid, "password": args.password }),
-                )
-                .await?;
+            let res = client.cmd("NetWifiConnect", json!({ "ssid": ssid, "password": args.password })).await?;
             if json {
                 output::print_value(&res, true);
             } else {
                 output::print_ok("WiFi connect requested");
             }
         } else if args.disconnect {
-            let res = client.post("/network/wifi/disconnect", json!({})).await?;
+            let res = client.cmd("NetWifiDisconnect", json!({})).await?;
             if json {
                 output::print_value(&res, true);
             } else {
                 output::print_ok("WiFi disconnected");
             }
-        } else if args.list {
-            let res = client.get("/network/wifi").await?;
-            output::print_value(&res, json);
         } else {
-            let res = client.get("/network/wifi").await?;
+            let res = client.cmd("NetWifiList", json!({})).await?;
             output::print_value(&res, json);
         }
     } else if args.eth {
         if args.connect {
-            let res = client
-                .post(
-                    "/network/eth/connect",
-                    json!({ "interface": args.iface }),
-                )
-                .await?;
+            let res = client.cmd("NetEthConnect", json!({ "interface": args.iface })).await?;
             if json {
                 output::print_value(&res, true);
             } else {
@@ -150,12 +134,7 @@ pub async fn run(client: CrawlClient, args: NetArgs, json: bool) -> Result<()> {
                 output::print_ok(&format!("Ethernet connected on {iface_out}"));
             }
         } else if args.disconnect {
-            let res = client
-                .post(
-                    "/network/eth/disconnect",
-                    json!({ "interface": args.iface }),
-                )
-                .await?;
+            let res = client.cmd("NetEthDisconnect", json!({})).await?;
             if json {
                 output::print_value(&res, true);
             } else {
@@ -163,22 +142,14 @@ pub async fn run(client: CrawlClient, args: NetArgs, json: bool) -> Result<()> {
                 output::print_ok(&format!("Ethernet disconnected on {iface_out}"));
             }
         } else if args.details {
-            let query = if let Some(iface) = args.iface.as_deref() {
-                format!("?interface={}", urlencoding::encode(iface))
-            } else {
-                String::new()
-            };
-            let res = client.get(&format!("/network/eth/details{query}")).await?;
-            output::print_value(&res, json);
-        } else if args.list {
-            let res = client.get("/network/eth").await?;
+            let res = client.cmd("NetEthDetails", json!({})).await?;
             output::print_value(&res, json);
         } else {
-            let res = client.get("/network/eth").await?;
+            let res = client.cmd("NetEthList", json!({})).await?;
             output::print_value(&res, json);
         }
     } else if args.status {
-        let res = client.get("/network/status").await?;
+        let res = client.cmd("NetStatus", json!({})).await?;
         if json {
             output::print_value(&res, true);
         } else {
@@ -189,7 +160,7 @@ pub async fn run(client: CrawlClient, args: NetArgs, json: bool) -> Result<()> {
             ]);
         }
     } else {
-        let res = client.get("/network/status").await?;
+        let res = client.cmd("NetStatus", json!({})).await?;
         if json {
             output::print_value(&res, true);
         } else if let Some(interfaces) = res["interfaces"].as_array() {

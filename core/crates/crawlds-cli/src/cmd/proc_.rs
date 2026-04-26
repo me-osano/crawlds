@@ -20,13 +20,13 @@ pub async fn run(client: CrawlClient, args: ProcArgs, json: bool) -> Result<()> 
     }
 
     if let Some(pid) = args.kill {
-        client.post(&format!("/proc/{pid}/kill"), json!({ "force": args.force })).await?;
+        client.cmd("ProcKill", json!({ "pid": pid, "force": args.force })).await?;
         output::print_ok(&format!("Sent signal to PID {pid}"));
     } else if let Some(name) = args.find {
-        let res = client.get(&format!("/proc/find?name={name}")).await?;
+        let res = client.cmd("ProcFind", json!({ "name": name })).await?;
         output::print_value(&res, json);
     } else {
-        let res = client.get(&format!("/proc/list?sort={}&top={}", args.sort, args.top)).await?;
+        let res = client.cmd("ProcList", json!({ "sort": args.sort, "top": args.top })).await?;
         if json {
             output::print_value(&res, true);
         } else if let Some(procs) = res.as_array() {
@@ -44,7 +44,7 @@ pub async fn run(client: CrawlClient, args: ProcArgs, json: bool) -> Result<()> 
 }
 
 async fn watch_pid(client: &CrawlClient, pid: u32, json: bool) -> Result<()> {
-    let res = client.get(&format!("/proc/watch/{pid}")).await?;
+    let res = client.cmd("ProcWatch", json!({ "pid": pid })).await?;
     if json {
         output::print_value(&res, true);
         return Ok(());

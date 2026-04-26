@@ -285,7 +285,7 @@ command = "agreety --cmd /bin/bash"
 }
 
 fn upsert_greetd_config(user: &str, command: &str) -> Result<()> {
-    let mut content = fs::read_to_string(GREETD_CONFIG_PATH).unwrap_or_else(|_| "[terminal]\nvt = 1\n\n[default_session]\n".to_string());
+    let content = fs::read_to_string(GREETD_CONFIG_PATH).unwrap_or_else(|_| "[terminal]\nvt = 1\n\n[default_session]\n".to_string());
     let updated = upsert_default_session(&content, user, command);
     let tmp_path = write_temp("greetd-config-", &updated)?;
     run_sudo(&["mkdir", "-p", "/etc/greetd"]).ok();

@@ -2,12 +2,12 @@ use crate::types::{
     ActiveEthernetDetails, ActiveWifiDetails, BatteryStatus, BlockDevice, BrightnessStatus,
     BtDevice, ClipEntry, CpuStatus, DiskUsage, EthernetInterface, FsEvent, GpuStatus,
     GreeterMessageType, GreeterStatus, HotspotClient, HotspotStatus, MemStatus, NetMode,
-    NetTraffic, Notification, ProcessInfo, RssItem, ThemeData, Wallpaper, WifiNetwork,
+    NetTraffic, Notification, ProcessInfo, RssItem, ThemeData, Wallpaper, WallpaperBackend,
+    WifiNetwork,
 };
 use serde::{Deserialize, Serialize};
 
-/// All events broadcast over the SSE `/events` stream.
-/// Quickshell and CLI --watch consumers filter by domain.
+/// All events broadcast over the Unix socket JSON-RPC event stream.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(tag = "domain", content = "data", rename_all = "snake_case")]
 pub enum CrawlEvent {
@@ -37,6 +37,8 @@ pub enum CrawlEvent {
     Webservice(WebserviceEvent),
     // Theme
     Theme(ThemeEvent),
+    // Wallpaper
+    Wallpaper(WallpaperEvent),
     // Daemon lifecycle
     Daemon(DaemonEvent),
 }
@@ -182,6 +184,17 @@ pub enum DiskEvent {
     },
 }
 
+// ── Wallpaper ─────────────────────────────────────────────────────────────────
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(tag = "event", rename_all = "snake_case")]
+pub enum WallpaperEvent {
+    Changed { screen: String, path: String },
+    BackendChanged { backend: WallpaperBackend },
+    BackendNotAvailable { backend: WallpaperBackend },
+    Error { message: String },
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(tag = "event", rename_all = "snake_case")]
 pub enum GreeterEvent {
@@ -235,10 +248,10 @@ pub enum WebserviceEvent {
 #[serde(tag = "event", rename_all = "snake_case")]
 pub enum ThemeEvent {
     Loaded { theme: ThemeData },
-    Changed { theme: ThemeData, variant: String },
+    Changed { theme: ThemeData, mode: String },
     ListUpdated { themes: Vec<String> },
     Error { message: String },
-    DynamicGenerated { theme: ThemeData, variant: String },
-    DynamicApplied { theme: ThemeData, variant: String },
+    DynamicGenerated { theme: ThemeData, mode: String },
+    DynamicApplied { theme: ThemeData, mode: String },
     DynamicError { message: String },
 }

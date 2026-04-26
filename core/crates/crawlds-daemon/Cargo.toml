@@ -19,6 +19,7 @@ crawlds-notify     = { path = "../crawlds-notify" }
 crawlds-clipboard  = { path = "../crawlds-clipboard" }
 crawlds-sysmon     = { path = "../crawlds-sysmon" }
 crawlds-display = { path = "../crawlds-display" }
+crawlds-system = { path = "../crawlds-system" }
 crawlds-proc       = { path = "../crawlds-proc" }
 crawlds-power      = { path = "../crawlds-power" }
 crawlds-vfs        = { path = "../crawlds-vfs" }

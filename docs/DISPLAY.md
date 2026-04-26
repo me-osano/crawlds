@@ -1,33 +1,35 @@
 # Display Architecture
 
-This document describes display control in CrawlDS, including brightness and nightlight.
+This document describes display control in CrawlDS, including brightness, nightlight, and wallpaper management.
 
 ## Overview
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                           UI Layer                                          │
-│  BrightnessIndicator │ NightlightIndicator │ DisplaySettings                │
+│  BrightnessIndicator │ NightlightIndicator │ WallpaperSelector             │
 └─────────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    ▼
+                                     │
+                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                      BrightnessService / NightlightService                   │
-│  BrightnessService: DDC/ddcutil → CrawlDS → /sys/class/backlight          │
-│  NightlightService: wayland-native → redshift (fallback)                   │
+│                      CrawlDSService (QML)                                   │
+│  brightnessPercent, nightlightEnabled, wallpaperEvent                       │
 └─────────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    ▼
+                                     │
+                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                    CrawlDSService                                           │
-│  brightnessDevice, brightnessPercent                                        │
+│                      Daemon JSON-RPC Server                                │
+│  BrightnessGet/Set │ NightlightEnable/Disable │ WallpaperStatus/Set        │
 └─────────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    ▼
+                                     │
+                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                      Backend (crawlds-display)                             │
-│  brightness.rs: sysfs /sys/class/backlight                                │
-│  nightlight.rs: redshift or wayland-native protocols                       │
+│                    Backend (crawlds-display)                                │
+│  ┌───────────────────────────────────────────────────────────────────────┐ │
+│  │ brightness.rs: sysfs /sys/class/backlight                            │ │
+│  │ nightlight.rs: redshift or wayland-native                            │ │
+│  │ wallpaper/: service + backends (swww, dummy)                         │ │
+│  └───────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -39,60 +41,65 @@ This document describes display control in CrawlDS, including brightness and nig
 |--------|------|---------|-------------|
 | brightness | `brightness.rs` | sysfs | Backlight brightness control |
 | nightlight | `nightlight.rs` | redshift/wayland | Blue light filter |
+| wallpaper | `wallpaper/` | swww | Wallpaper management subsystem |
 
-### Brightness Endpoints
+## Brightness Control
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/brightness` | GET | Get current brightness status |
-| `/brightness/set` | POST | Set brightness to specific percent |
-| `/brightness/inc` | POST | Increase brightness by delta |
-| `/brightness/dec` | POST | Decrease brightness by delta |
-
-### Brightness Response Format
-
-```bash
-# GET /brightness
-Response:
-{
-  "device": "intel_backlight",
-  "current": 800,
-  "max": 1000,
-  "percent": 80.0
-}
-```
-
-### Nightlight Endpoints
+### Endpoints
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/nightlight/status` | GET | Get nightlight status |
-| `/nightlight/enable` | POST | Enable nightlight |
-| `/nightlight/disable` | POST | Disable nightlight |
-| `/nightlight/temperature` | POST | Set color temperature (K) |
+| `BrightnessGet` | RPC | Get current brightness status |
+| `BrightnessSet` | RPC | Set brightness to specific percent |
+| `BrightnessInc` | RPC | Increase brightness by delta |
+| `BrightnessDec` | RPC | Decrease brightness by delta |
 
-### Nightlight Response Format
+### Response Format
 
-```bash
-# GET /nightlight/status
-Response:
+```json
 {
-  "enabled": true,
-  "temperature_k": 4500,
-  "available": true
+  "status": {
+    "device": "intel_backlight",
+    "current": 800,
+    "max": 1000,
+    "percent": 80.0
+  }
 }
 ```
 
-## Brightness Implementation
+### Implementation
 
 Located in `core/crates/crawlds-display/src/brightness.rs`:
 
 - Reads/writes `/sys/class/backlight/<device>/brightness`
 - Auto-detects device (prefers intel, then amdgpu, then any)
 - Configurable min/max percent bounds
-- Reactive: emits SSE event on brightness change
+- Emits SSE event on brightness change
 
-## Nightlight Implementation
+## Nightlight Control
+
+### Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `NightlightStatus` | RPC | Get nightlight status |
+| `NightlightEnable` | RPC | Enable nightlight |
+| `NightlightDisable` | RPC | Disable nightlight |
+| `NightlightSet` | RPC | Set color temperature (K) |
+
+### Response Format
+
+```json
+{
+  "status": {
+    "enabled": true,
+    "temperature_k": 4500,
+    "available": true
+  }
+}
+```
+
+### Implementation
 
 Located in `core/crates/crawlds-display/src/nightlight.rs`:
 
@@ -101,107 +108,168 @@ Located in `core/crates/crawlds-display/src/nightlight.rs`:
 - Temperature range: 1000K (warm) to 10000K (cool)
 - Supports smooth transitions
 
-### Wayland-Native Support (TODO)
+## Wallpaper Management
 
-| Compositor | Protocol | Interface |
-|------------|----------|-----------|
-| KDE | KWin | `org.kde.KWin.TempFilter` |
-| GNOME | gsd-color | `org.gnome.SettingsDaemon.Color.Temperature` |
-| sway | i3msg | custom |
+The wallpaper subsystem follows a clean architecture with pluggable backends.
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    WallpaperService (service.rs)                            │
+│  - Owns WallpaperState (current, per_monitor)                               │
+│  - Orchestrates backends                                                    │
+│  - Sends WallpaperEvent on changes                                          │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│               WallpaperBackend (trait)                                      │
+│  ┌────────────────┬────────────────┬──────────────┐                        │
+│  │   SwwwBackend  │ MpvpaperBackend │  DummyBackend│                        │
+│  │  (implemented) │    (future)    │  (fallback)  │                        │
+│  └────────────────┴────────────────┴──────────────┘                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Key Types
+
+| Type | Description |
+|------|-------------|
+| `WallpaperState` | Current wallpaper path + per-monitor mappings |
+| `SetWallpaperRequest` | Path, monitor, mode, transition, duration |
+| `WallpaperMode` | Fill, Fit, Stretch, Center, Tile |
+| `BackendInfo` | Backend name, availability, daemon status |
+
+### Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `WallpaperStatus` | RPC | Get current wallpaper state |
+| `WallpaperSet` | RPC | Set wallpaper (path, monitor?, transition?) |
+| `WallpaperGet` | RPC | Get wallpaper for specific monitor |
+| `WallpaperBackends` | RPC | List available backends |
+
+### Request Format
+
+```json
+{
+  "method": "WallpaperSet",
+  "params": {
+    "path": "/home/user/wallpapers/arch.jpg",
+    "monitor": "eDP-1",
+    "transition": "fade"
+  }
+}
+```
+
+### Response Format
+
+```json
+{
+  "result": { "ok": true }
+}
+```
+
+### Backend Detection
+
+The service auto-detects the best available backend:
+
+1. Check for `swww` binary
+2. Fall back to `DummyBackend` (no-op)
+
+### Module Structure
+
+```
+crawlds-display/src/wallpaper/
+├── mod.rs           # Module exports + Config
+├── models.rs        # SetWallpaperRequest, WallpaperState, WallpaperMode, etc.
+├── backend/
+│   ├── mod.rs       # WallpaperBackend trait, detect_backend(), list_backends()
+│   └── swww.rs      # swww implementation with daemon auto-start
+└── service.rs       # WallpaperService, handle_ipc_request_sync()
+```
+
+### Design Principles
+
+1. **Backend is dumb** — only executes commands
+2. **Service owns state** — tracks current wallpaper per monitor
+3. **IPC talks to service** — never directly to backend
+4. **Pluggable** — trait allows adding `mpvpaper` or custom renderers later
+
+## Configuration
+
+### `core.toml` Wallpaper Section
+
+```toml
+[wallpaper]
+swww_bin = "swww"
+default_transition = "fade"
+transition_duration_ms = 500
+```
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `swww_bin` | `"swww"` | Path to swww binary |
+| `default_transition` | `"fade"` | Default transition type |
+| `transition_duration_ms` | `500` | Transition duration in milliseconds |
+
+### Transition Types
+
+swww supports: `fade`, `left`, `right`, `up`, `down`, `center`, `any`, `random`
 
 ## Files
 
 | File | Purpose |
 |------|---------|
-| `core/crates/crawlds-display/src/lib.rs` | Main module, combined config |
-| `core/crates/crawlds-display/src/brightness.rs` | Backlight brightness |
-| `core/crates/crawlds-display/src/nightlight.rs` | Blue light filter |
-| `quickshell/services/BrightnessService.qml` | Full brightness control (DDC, fallback) |
-| `quickshell/services/NightlightService.qml` | Nightlight service (TODO) |
+| `crawlds-display/src/lib.rs` | Main module, re-exports |
+| `crawlds-display/src/brightness.rs` | Backlight brightness |
+| `crawlds-display/src/nightlight.rs` | Blue light filter |
+| `crawlds-display/src/wallpaper/` | Wallpaper subsystem |
+| `crawlds-display/src/config.rs` | Unified config types |
+| `quickshell/Services/UI/WallpaperService.qml` | QML wallpaper service |
+| `quickshell/Services/Core/CrawlDSService.qml` | Event handling |
 
 ## Roadmap
 
 ### High Priority
 
-- [ ] **Nightlight D-Bus integration**
-  - KDE: `org.kde.KWin.TempFilter` interface
-  - GNOME: `org.gnome.SettingsDaemon.Color.Temperature`
-  - Auto-detect compositor and use appropriate protocol
+- [ ] **Backend auto-start**
+  - Automatically start swww daemon if not running
+  - Detect compositor and use appropriate wallpaper backend
 
-- [ ] **Smooth transitions**
-  - Gradual brightness changes over 500ms-1s
-  - Nightlight temperature transitions during schedule changes
+- [ ] **Per-monitor wallpaper profiles**
+  - Save different wallpapers per monitor
+  - Support monitor hotplugging
 
-- [ ] **Nightlight scheduling**
-  - Automatic enable/disable based on time of day
-  - Sunset to sunrise calculation based on geolocation
-  - Manual override with auto-resume
-
-- [ ] **NightlightService.qml**
-  - QML service to complement BrightnessService
-  - Integration with CrawlDSService for SSE events
+- [ ] **Wallpaper rotation scheduler**
+  - Time-based wallpaper changes
+  - Integration with existing automation system
 
 ### Medium Priority
 
-- [ ] **Ambient light sensor**
-  - Read ALS from `/sys/class/backlight/.../als`
-  - Auto-adjust brightness based on ambient light
-  - Hysteresis to prevent oscillation
+- [ ] **mpvpaper backend**
+  - Animated/gif wallpapers support
+  - Video wallpaper playback
 
-- [ ] **Multi-display support**
-  - Handle multiple backlight devices
-  - Per-display brightness control
-  - Sync or independent brightness modes
+- [ ] **Custom renderer backend** (future)
+  - Wayland-native wallpaper rendering
+  - Drop-in replacement for swww
 
-- [ ] **Keyboard backlight**
-  - Support for keyboard backlight (`/sys/class/leds`)
-  - Separate service or merged into display
-
-- [ ] **Per-monitor brightness in backend**
-  - Backend could expose DDC/CI control
-  - Backend could enumerate all backlight devices
-  - UI layer already handles this, but backend could lead
+- [ ] **Matugen integration**
+  - Auto-generate color scheme on wallpaper change
+  - Trigger theming pipeline from wallpaper events
 
 ### Lower Priority
+
+- [ ] **Wallpaper caching**
+  - Preload wallpapers for faster transitions
+  - Background download for remote wallpapers
+
+- [ ] **Wallpaper search**
+  - Integration with wallpaper APIs (Wallhaven, etc.)
+  - Local wallpaper indexer
 
 - [ ] **DPMS control**
   - Turn screen off on idle
   - Lock screen integration
-  - Configurable timeout per power profile
-
-- [ ] **Color profile management**
-  - ICC profile switching
-  - Per-app color profiles
-  - Automatic switching based on content
-
-- [ ] **Gamma correction**
-  - Manual RGB adjustment
-  - Color blindness modes
-  - High contrast modes
-
-- [ ] **Backend refactor for config**
-  - Currently uses `crawlds_display::Config` in daemon config
-  - Need to align with `brightness.rs` module structure
-  - Nightlight config not yet wired in daemon
-
-### Nice to Have
-
-- [ ] **Nightlight sunrise mode**
-  - Gradual temperature shift in morning
-  - Mimics natural light cycle
-
-- [ ] **App-specific rules**
-  - Auto-dim for certain apps
-  - Nightlight activation for specific apps
-
-- [ ] **OSD notifications**
-  - Show brightness/nightlight changes
-  - Customizable OSD style
-
-- [ ] **Temperature-aware brightness curves**
-  - Auto-dim at night (reduce blue light)
-  - Outdoor mode: boost brightness and warmth
-
-- [ ] **Nightlight automatic temperature**
-  - Based on geolocation, calculate sunset/sunrise times
-  - Smooth transitions between day/night temperatures

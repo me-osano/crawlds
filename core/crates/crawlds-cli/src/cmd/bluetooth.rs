@@ -57,52 +57,52 @@ pub struct BtArgs {
 
 pub async fn run(client: CrawlClient, args: BtArgs, json: bool) -> Result<()> {
     if let Some(addr) = &args.connect {
-        let res = client.post("/bluetooth/connect", json!({ "address": addr })).await?;
+        let res = client.cmd("BtConnect", json!({ "address": addr })).await?;
         if json { output::print_value(&res, true); } else { output::print_ok(&format!("Connected to {addr}")); }
     } else if let Some(addr) = &args.disconnect {
-        let res = client.post("/bluetooth/disconnect", json!({ "address": addr })).await?;
+        let res = client.cmd("BtDisconnect", json!({ "address": addr })).await?;
         if json { output::print_value(&res, true); } else { output::print_ok(&format!("Disconnected {addr}")); }
     } else if let Some(ref state) = args.power {
         let on = state == "on";
-        let res = client.post("/bluetooth/power", json!({ "on": on })).await?;
+        let res = client.cmd("BtPower", json!({ "on": on })).await?;
         if json { output::print_value(&res, true); } else { output::print_ok(&format!("Adapter powered {state}")); }
     } else if args.scan {
-        let res = client.post("/bluetooth/scan", json!({})).await?;
+        let res = client.cmd("BtScan", json!({})).await?;
         if json { output::print_value(&res, true); } else { output::print_ok("Scan started"); }
     } else if let Some(ref state) = args.discoverable {
         let on = state == "on";
-        let res = client.post("/bluetooth/discoverable", json!({ "on": on })).await?;
+        let res = client.cmd("BtDiscoverable", json!({ "on": on })).await?;
         if json { output::print_value(&res, true); } else { output::print_ok(&format!("Discoverable {state}")); }
     } else if let Some(ref state) = args.pairable {
         let on = state == "on";
-        let res = client.post("/bluetooth/pairable", json!({ "on": on })).await?;
+        let res = client.cmd("BtPairable", json!({ "on": on })).await?;
         if json { output::print_value(&res, true); } else { output::print_ok(&format!("Pairable {state}")); }
     } else if let Some(ref vals) = args.alias {
         if vals.len() == 2 {
             let addr = &vals[0];
             let alias = &vals[1];
-            let res = client.post("/bluetooth/alias", json!({ "address": addr, "alias": alias })).await?;
+            let res = client.cmd("BtAlias", json!({ "address": addr, "alias": alias })).await?;
             if json { output::print_value(&res, true); } else { output::print_ok(&format!("Set {addr} alias to '{alias}'")); }
         } else {
             output::print_ok("Usage: --alias <ADDRESS> <ALIAS>");
         }
     } else if let Some(addr) = &args.pair {
-        let res = client.post("/bluetooth/pair", json!({ "address": addr })).await?;
+        let res = client.cmd("BtPair", json!({ "address": addr })).await?;
         if json { output::print_value(&res, true); } else { output::print_ok(&format!("Pairing with {addr}")); }
     } else if let Some(ref vals) = args.trust {
         if vals.len() == 2 {
             let addr = &vals[0];
             let trusted = vals[1] == "on";
-            let res = client.post("/bluetooth/trust", json!({ "address": addr, "trusted": trusted })).await?;
+            let res = client.cmd("BtTrust", json!({ "address": addr, "trusted": trusted })).await?;
             if json { output::print_value(&res, true); } else { output::print_ok(&format!("{addr} trust: {}", if trusted { "enabled" } else { "disabled" })); }
         } else {
             output::print_ok("Usage: --trust <ADDRESS> <on|off>");
         }
     } else if let Some(addr) = &args.remove {
-        let res = client.post("/bluetooth/remove", json!({ "address": addr })).await?;
+        let res = client.cmd("BtRemove", json!({ "address": addr })).await?;
         if json { output::print_value(&res, true); } else { output::print_ok(&format!("Removed {addr}")); }
     } else {
-        let res = client.get("/bluetooth/status").await?;
+        let res = client.cmd("BtStatus", serde_json::json!({})).await?;
         if json {
             output::print_value(&res, true);
         } else {

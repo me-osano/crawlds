@@ -67,7 +67,7 @@ async fn spawn_domains(state: &Arc<AppState>) {
 
     tokio::spawn(crawlds_clipboard::run(cfg.clipboard.clone(), tx.clone()));
     tokio::spawn(crawlds_sysmon::run(cfg.sysmon.clone(), tx.clone()));
-    tokio::spawn(crawlds_display::run(cfg.brightness.clone(), tx.clone()));
+    tokio::spawn(crawlds_display::run_brightness(cfg.brightness.clone(), tx.clone()));
     tokio::spawn(crawlds_proc::run(cfg.processes.clone(), tx.clone()));
     tokio::spawn(crawlds_power::run(cfg.power.clone(), tx.clone()));
 

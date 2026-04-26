@@ -9,7 +9,7 @@ pub struct PowerArgs {
 }
 
 pub async fn run(client: CrawlClient, _args: PowerArgs, json: bool) -> Result<()> {
-    let res = client.get("/power/battery").await?;
+    let res = client.cmd("PowerBattery", serde_json::json!({})).await?;
     if json {
         output::print_value(&res, true);
     } else {

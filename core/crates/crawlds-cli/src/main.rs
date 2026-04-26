@@ -85,7 +85,7 @@ async fn main() -> Result<()> {
         Commands::Restart              => { cmd::shell::restart_shell(); },
         Commands::Kill                 => { cmd::shell::kill_shell(); },
         Commands::RestartDetached(args) => { cmd::shell::run_restart_detached(args); },
-        Commands::Ipc(args)            => { cmd::shell::run_shell_ipc_command(&args.args); },
+        Commands::Ipc(args)            => { cmd::shell::run_ipc(args).await?; },
         Commands::Update(args)         => cmd::shell::update(args).await?,
         Commands::Version(args)        => cmd::shell::version(args)?,
         Commands::Bluetooth(args)         => cmd::bluetooth::run(client, args, json_mode).await?,

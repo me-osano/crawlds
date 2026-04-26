@@ -1,5 +1,7 @@
 //! Wallhaven API client
 
+#![allow(dead_code)]
+
 use crate::config::WallhavenConfig;
 use crate::http_client::HttpClient;
 use crawlds_ipc::types::Wallpaper;

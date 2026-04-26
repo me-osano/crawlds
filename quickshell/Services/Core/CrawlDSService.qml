@@ -17,6 +17,7 @@ Singleton {
     signal idleEvent(var data)
     signal nightlightEvent(var data)
     signal themeEvent(var data)
+    signal wallpaperEvent(var data)
 
     // ── Connection state ──────────────────────────────────────────────────
     property bool crawldsAvailable: false
@@ -98,6 +99,18 @@ Singleton {
     property var    diskUsage:           []
     property var    removableDevices:    []
     signal fileSearchResults(var results)
+
+    // ── Wallpaper ───────────────────────────────────────────────────────────
+    property var    wallpaperBackends:      []
+    property bool   wallpaperSwwwAvailable: false
+    property bool   wallpaperSwwwRunning:   false
+
+    // ── System Info ─────────────────────────────────────────────────────────
+    property string compositorName:        ""
+    property var    compositorCapabilities: ({})
+    property bool   supportsWallpaperControl: false
+    property bool   supportsBlur:           false
+    property bool   supportsLayerShell:     false
 
     // ── Internal ──────────────────────────────────────────────────────────
     property var _pendingInit: 0
@@ -279,6 +292,8 @@ Singleton {
         jsonCmd({ cmd: "VfsDiskUsage" }, _handleDiskUsage)
         jsonCmd({ cmd: "DiskList" }, _handleRemovableDevices)
         jsonCmd({ cmd: "BrightnessStatus" }, _handleBrightness)
+        jsonCmd({ cmd: "WallpaperBackends" }, _updateWallpaperBackends)
+        jsonCmd({ cmd: "SystemInfo" }, _updateSystemInfo)
     }
 
     function _setCoreConfig(section, key, value) {
@@ -338,6 +353,7 @@ Singleton {
         case "idle":      idleEvent(eventData);             break
         case "nightlight": nightlightEvent(eventData);      break
         case "theme":     themeEvent(eventData);            break
+        case "wallpaper": _handleWallpaperEvent(eventData); break
         }
     }
 
@@ -624,5 +640,93 @@ Singleton {
     function searchFiles(query, maxResults) {
         const max = maxResults || 50
         jsonCmd({ cmd: "VfsSearch", q: query, max_results: max }, root.fileSearchResults)
+    }
+
+    // ── Wallpaper control ─────────────────────────────────────────────────
+    function _handleWallpaperEvent(data) {
+        switch (data.event) {
+        case "changed":
+            wallpaperEvent(data)
+            break
+        case "backend_changed":
+            _updateWallpaperBackends()
+            break
+        case "backend_not_available":
+            wallpaperEvent(data)
+            break
+        case "error":
+            wallpaperEvent(data)
+            break
+        }
+    }
+
+    function _updateWallpaperBackends() {
+        jsonCmd({ cmd: "WallpaperBackends" }, (result) => {
+            if (result && result.backends) {
+                root.wallpaperBackends = result.backends
+                for (let backend of result.backends) {
+                    if (backend.name === "swww") {
+                        root.wallpaperSwwwAvailable = backend.available
+                        root.wallpaperSwwwRunning = backend.daemon_running
+                    }
+                }
+            }
+        })
+    }
+
+    function wallpaperStatus() {
+        jsonCmd({ cmd: "WallpaperStatus" }, (result) => {
+            if (result) {
+                wallpaperEvent({ event: "status", data: result })
+            }
+        })
+    }
+
+    function wallpaperSet(path, monitor, transition) {
+        const params = { path: path }
+        if (monitor) params.monitor = monitor
+        if (transition) params.transition = transition
+        jsonCmd({ cmd: "WallpaperSet", ...params }, null)
+    }
+
+    function wallpaperGet(monitor) {
+        jsonCmd({ cmd: "WallpaperGet", monitor: monitor }, (result) => {
+            if (result) {
+                wallpaperEvent({ event: "current", path: result.wallpaper })
+            }
+        })
+    }
+
+    function wallpaperQueryBackends() {
+        _updateWallpaperBackends()
+    }
+
+    // ── System Info handlers ───────────────────────────────────────────────
+    function _updateSystemInfo(data) {
+        if (!data) return
+
+        // Update compositor info
+        if (data.compositor) {
+            root.compositorName = data.compositor.name || ""
+            root.compositorCapabilities = data.compositor.capabilities || {}
+
+            // Convenience properties
+            root.supportsWallpaperControl = data.compositor.capabilities?.wallpaper_control || false
+            root.supportsBlur = data.compositor.capabilities?.blur || false
+            root.supportsLayerShell = data.compositor.capabilities?.layer_shell || false
+        }
+
+        // Could also store OS info, hardware, etc. if needed
+        if (data.os) {
+            root.osInfo = {
+                name: data.os.name,
+                kernel: data.os.kernel,
+                prettyName: data.os.pretty_name
+            }
+        }
+    }
+
+    function querySystemInfo() {
+        jsonCmd({ cmd: "SystemInfo" }, _updateSystemInfo)
     }
 }

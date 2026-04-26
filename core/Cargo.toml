@@ -16,6 +16,7 @@ members = [
     "crates/crawlds-greeter",
     "crates/crawlds-theme",
     "crates/crawlds-scheduler",
+    "crates/crawlds-system",
 ]
 resolver = "2"
 

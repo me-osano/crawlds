@@ -49,11 +49,48 @@ poll_interval_ms = 1000
 cpu_spike_threshold = 90.0
 mem_pressure_threshold = 85.0
 
-# ── Brightness ─────────────────────────────────────────────────────────────
+# ── Brightness ──────────────────────────────────────────────────────────────
 [brightness]
 device = ""
 min_percent = 1.0
 max_percent = 100.0
+
+# ── Wallpaper ─────────────────────────────────────────────────────────────────
+[wallpaper]
+swww_bin = "swww"
+default_transition = "fade"
+transition_duration_ms = 500
+default_wallpaper = "/usr/local/share/crawlds/assets/wallpaper/crawlds.png"
+auto_generate_theme = true
+
+
+# --------TODO: Theme example template ------------
+[theme]
+source = "generic" # "generic" or "dynamic"
+name = "Nord" # "ThemeName" for generic or "WallpaperName" for dynamic
+scheme = "static" # "static" for generic or "tonal-spot" etc for dynamic
+mode = "dark" # "dark" or "light"
+default_scheme = "tonal-spot"   # vibrant, tonal-spot, excited, rainbow
+default_mode = "dark"          # dark, light
+cacheDir = ""
+
+[theme.templates]
+alacritty = false
+btop = false
+code = false
+crawlds = false
+emacs = false
+foot = false
+ghostty = false
+gtk = false
+helix = false
+kitty = false
+walker = false
+wezterm = false
+yazi = false
+zed-editor = false
+zen-browser = false
+
 
 # ── Processes ─────────────────────────────────────────────────────────────────
 [processes]

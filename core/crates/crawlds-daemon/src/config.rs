@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use figment::{
     providers::{Env, Format, Serialized, Toml},
     Figment,
@@ -17,12 +19,13 @@ pub struct Config {
     pub theme: ThemeConfig,
     pub daemon: DaemonConfig,
     pub greeter: GreeterConfig,
+    pub wallpaper: crawlds_display::WallpaperConfig,
     pub bluetooth: crawlds_bluetooth::Config,
     pub network: crawlds_network::Config,
     pub notifications: crawlds_notify::Config,
     pub clipboard: crawlds_clipboard::Config,
     pub sysmon: crawlds_sysmon::Config,
-    pub brightness: crawlds_display::Config,
+    pub brightness: crawlds_display::BrightnessConfig,
     pub processes: crawlds_proc::Config,
     pub power: crawlds_power::Config,
     pub idle: IdleConfig,
@@ -33,17 +36,53 @@ pub struct Config {
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ThemeConfig {
     #[serde(default)]
-    pub current: Option<String>,
+    pub source: String,
     #[serde(default)]
-    pub variant: Option<String>,
+    pub name: String,
+    #[serde(default)]
+    pub scheme: String,
+    #[serde(default)]
+    pub mode: String,
     #[serde(default)]
     pub default_scheme: String,
     #[serde(default)]
     pub default_mode: String,
     #[serde(default)]
-    pub auto_generate: bool,
-    #[serde(default)]
     pub cache_dir: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct TemplateConfig {
+    #[serde(default)]
+    pub alacritty: bool,
+    #[serde(default)]
+    pub btop: bool,
+    #[serde(default)]
+    pub code: bool,
+    #[serde(default)]
+    pub crawlds: bool,
+    #[serde(default)]
+    pub emacs: bool,
+    #[serde(default)]
+    pub foot: bool,
+    #[serde(default)]
+    pub ghostty: bool,
+    #[serde(default)]
+    pub gtk: bool,
+    #[serde(default)]
+    pub helix: bool,
+    #[serde(default)]
+    pub kitty: bool,
+    #[serde(default)]
+    pub walker: bool,
+    #[serde(default)]
+    pub wezterm: bool,
+    #[serde(default)]
+    pub yazi: bool,
+    #[serde(default)]
+    pub zed_editor: bool,
+    #[serde(default)]
+    pub zen_browser: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -131,7 +170,15 @@ pub fn load() -> anyhow::Result<Config> {
 
     // Set default assets_dir if not configured
     if config.assets_dir.as_os_str().is_empty() {
-        config.assets_dir = PathBuf::from("/usr/share/local/crawlds/assets");
+        // Try multiple possible locations
+        let possible_paths = vec![
+            PathBuf::from("/usr/local/share/crawlds/assets"),
+            PathBuf::from("/usr/share/crawlds/assets"),
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("assets"),
+        ];
+        config.assets_dir = possible_paths.into_iter()
+            .find(|p| p.exists())
+            .unwrap_or_else(|| PathBuf::from("/usr/local/share/crawlds/assets"));
     }
 
     // Set default cache_dir if not configured
@@ -139,6 +186,15 @@ pub fn load() -> anyhow::Result<Config> {
         let cache_home = std::env::var("XDG_CACHE_HOME")
             .unwrap_or_else(|_| format!("{}/.cache", std::env::var("HOME").unwrap_or_default()));
         config.cache_dir = PathBuf::from(cache_home).join("crawlds");
+    }
+
+    // Resolve default wallpaper path relative to assets_dir
+    if let Some(ref wp) = config.wallpaper.default_wallpaper {
+        if !wp.starts_with('/') && !wp.starts_with("assets") {
+            // Already relative path - prepend assets_dir
+        } else if !wp.starts_with('/') {
+            config.wallpaper.default_wallpaper = Some(config.assets_dir.join(wp).to_string_lossy().to_string());
+        }
     }
 
     Ok(config)
@@ -153,12 +209,13 @@ impl Default for Config {
             theme: ThemeConfig::default(),
             daemon: DaemonConfig::default(),
             greeter: GreeterConfig::default(),
+            wallpaper: crawlds_display::WallpaperConfig::default(),
             bluetooth: crawlds_bluetooth::Config::default(),
             network: crawlds_network::Config::default(),
             notifications: crawlds_notify::Config::default(),
             clipboard: crawlds_clipboard::Config::default(),
             sysmon: crawlds_sysmon::Config::default(),
-            brightness: crawlds_display::Config::default(),
+            brightness: crawlds_display::BrightnessConfig::default(),
             processes: crawlds_proc::Config::default(),
             power: crawlds_power::Config::default(),
             idle: IdleConfig::default(),

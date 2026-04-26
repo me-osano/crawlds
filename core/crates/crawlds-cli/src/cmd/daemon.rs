@@ -22,7 +22,7 @@ pub async fn run(client: CrawlClient, args: DaemonArgs, json: bool) -> Result<()
             output::print_err(&format!("failed to {action} crawlds daemon"));
         }
     } else {
-        match client.get("/health").await {
+        match client.cmd("Health", serde_json::json!({})).await {
             Ok(res) => {
                 if json { output::print_value(&res, true); }
                 else {

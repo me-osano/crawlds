@@ -90,19 +90,8 @@ fn redshift_available() -> bool {
 }
 
 async fn try_wayland_native(_temp: u32) -> Result<(), NightlightError> {
-    #[cfg(feature = "wayland")]
-    {
-        // TODO: Implement wayland-native via kanshi or compositor-specific protocols
-        // For KDE: org.kde.KWin.TempFilter
-        // For GNOME: org.gnome.SettingsDaemon.Color.Temperature
-        // For sway: i3 IPC or swaymsg
-    }
-
-    #[cfg(not(feature = "wayland"))]
-    {
-        let _ = _temp;
-        Err(NightlightError::NotAvailable)
-    }
+    let _ = _temp;
+    Err(NightlightError::NotAvailable)
 }
 
 fn try_redshift(temp: u32) -> Result<(), NightlightError> {

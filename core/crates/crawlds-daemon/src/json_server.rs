@@ -14,6 +14,8 @@ use tracing::{debug, error, info};
 
 use crate::state::AppState;
 use crawlds_ipc::CrawlEvent;
+use crawlds_theme::template::apps as template_app;
+use crawlds_theme::template::apply::TemplateApplicator;
 use crawlds_webservice::WallhavenWorker;
 
 const JSONRPC_VERSION: &str = "2.0";
@@ -82,6 +84,9 @@ pub enum Command {
     ThemeCurrent,
     ThemeSet { name: String },
     ThemeGet { name: Option<String> },
+    TemplateList,
+    TemplateRender { name: String },
+    TemplateApply { name: String, path: String },
     SysmonCpu,
     SysmonMem,
     SysmonDisk,
@@ -123,6 +128,12 @@ pub enum Command {
     BrightnessSet { value: i32 },
     BrightnessInc { value: i32 },
     BrightnessDec { value: i32 },
+    WallpaperStatus,
+    WallpaperSet { path: String, monitor: Option<String>, transition: Option<String> },
+    WallpaperGet { monitor: Option<String> },
+    WallpaperBackends,
+    SystemInfo,
+    CompositorCapabilities,
     NotifyList,
     NotifySend { title: String, body: String },
     ClipGet,
@@ -336,6 +347,9 @@ impl JsonServer {
             Command::ThemeCurrent => self.theme_current().await,
             Command::ThemeSet { name } => self.theme_set(name).await,
             Command::ThemeGet { name } => self.theme_get(name).await,
+            Command::TemplateList => self.template_list().await,
+            Command::TemplateRender { name } => self.template_render(name).await,
+            Command::TemplateApply { name, path } => self.template_apply(name, path).await,
             Command::SysmonCpu => self.sysmon_cpu().await,
             Command::SysmonMem => self.sysmon_mem().await,
             Command::SysmonDisk => self.sysmon_disk().await,
@@ -418,6 +432,12 @@ impl JsonServer {
             Command::BrightnessSet { value } => self.brightness_set(value).await,
             Command::BrightnessInc { value } => self.brightness_inc(value).await,
             Command::BrightnessDec { value } => self.brightness_dec(value).await,
+            Command::WallpaperStatus => self.wallpaper_status().await,
+            Command::WallpaperSet { path, monitor, transition } => self.wallpaper_set(path, monitor, transition).await,
+            Command::WallpaperGet { monitor } => self.wallpaper_get(monitor).await,
+            Command::WallpaperBackends => self.wallpaper_backends().await,
+            Command::SystemInfo => self.system_info().await,
+            Command::CompositorCapabilities => self.compositor_capabilities().await,
             Command::ProcList { sort, top } => self.proc_list(sort, top).await,
             Command::ProcTop { limit } => self.proc_top(limit).await,
             Command::ProcFind { name } => self.proc_find(name).await,
@@ -513,6 +533,55 @@ impl JsonServer {
             } else {
                 let theme = guard.get_current();
                 JsonRpcResponse::success(None, serde_json::json!({ "theme": theme }))
+            }
+        } else { JsonRpcResponse::error(None, -32000, "no state") }
+    }
+
+    async fn template_list(&self) -> JsonRpcResponse {
+        let templates = template_app::list_templates();
+        JsonRpcResponse::success(None, serde_json::json!({ "templates": templates }))
+    }
+
+    async fn template_render(&self, name: String) -> JsonRpcResponse {
+        if let Some(s) = self.get_state().await {
+            let guard = s.theme_manager.lock().await;
+            let theme = match guard.get_current() {
+                Some(t) => t,
+                None => return JsonRpcResponse::error(None, -32000, "no current theme"),
+            };
+
+            let template = match template_app::get_template(&name) {
+                Some(t) => t,
+                None => return JsonRpcResponse::error(None, -32601, "template not found"),
+            };
+
+            let colors = crawlds_theme::theme_colors_to_scheme_colors(&theme.dark.colors);
+            let content = template.render(&colors);
+            JsonRpcResponse::success(None, serde_json::json!({ "content": content, "name": name }))
+        } else { JsonRpcResponse::error(None, -32000, "no state") }
+    }
+
+    async fn template_apply(&self, name: String, path: String) -> JsonRpcResponse {
+        if let Some(s) = self.get_state().await {
+            let guard = s.theme_manager.lock().await;
+            let theme = match guard.get_current() {
+                Some(t) => t,
+                None => return JsonRpcResponse::error(None, -32000, "no current theme"),
+            };
+
+            let template = match template_app::get_template(&name) {
+                Some(t) => t,
+                None => return JsonRpcResponse::error(None, -32601, "template not found"),
+            };
+
+            let colors = crawlds_theme::theme_colors_to_scheme_colors(&theme.dark.colors);
+            let content = template.render(&colors);
+
+            let path_buf = std::path::PathBuf::from(&path);
+            let applicator = TemplateApplicator::new();
+            match applicator.apply(&content, &path_buf) {
+                Ok(_) => JsonRpcResponse::success(None, serde_json::json!({ "ok": true, "path": path })),
+                Err(e) => JsonRpcResponse::error(None, -32000, &e),
             }
         } else { JsonRpcResponse::error(None, -32000, "no state") }
     }
@@ -1139,6 +1208,78 @@ impl JsonServer {
         match crawlds_proc::watch_pid(pid).await {
             Ok(name) => JsonRpcResponse::success(None, serde_json::json!({ "pid": pid, "name": name, "exit_code": serde_json::Value::Null })),
             Err(e) => JsonRpcResponse::error(None, -32000, &e.to_string()),
+        }
+    }
+
+    // ── Wallpaper handlers ─────────────────────────────────────────────────
+
+    async fn wallpaper_status(&self) -> JsonRpcResponse {
+        if let Some(s) = self.get_state().await {
+            let state = s.wallpaper_service.get_state().await;
+            JsonRpcResponse::success(None, serde_json::to_value(state).unwrap_or_default())
+        } else {
+            JsonRpcResponse::error(None, -32000, "no state")
+        }
+    }
+
+    async fn wallpaper_set(
+        &self,
+        path: String,
+        monitor: Option<String>,
+        transition: Option<String>,
+    ) -> JsonRpcResponse {
+        if let Some(s) = self.get_state().await {
+            let request = crawlds_display::wallpaper::SetWallpaperRequest {
+                path,
+                monitor,
+                mode: crawlds_display::wallpaper::WallpaperMode::Fill,
+                transition: transition.unwrap_or_default(),
+                transition_duration_ms: 500,
+            };
+            match s.wallpaper_service.set_wallpaper(request).await {
+                Ok(()) => JsonRpcResponse::success(None, serde_json::json!({ "ok": true })),
+                Err(e) => JsonRpcResponse::error(None, -32000, &e.to_string()),
+            }
+        } else {
+            JsonRpcResponse::error(None, -32000, "no state")
+        }
+    }
+
+    async fn wallpaper_get(&self, monitor: Option<String>) -> JsonRpcResponse {
+        if let Some(s) = self.get_state().await {
+            let wallpaper = s
+                .wallpaper_service
+                .get_wallpaper(monitor.as_deref())
+                .await;
+            JsonRpcResponse::success(
+                None,
+                serde_json::json!({ "wallpaper": wallpaper }),
+            )
+        } else {
+            JsonRpcResponse::error(None, -32000, "no state")
+        }
+    }
+
+    async fn wallpaper_backends(&self) -> JsonRpcResponse {
+        let backends = crawlds_display::WallpaperService::list_backends();
+        JsonRpcResponse::success(None, serde_json::json!({ "backends": backends }))
+    }
+
+    async fn system_info(&self) -> JsonRpcResponse {
+        if let Some(s) = self.get_state().await {
+            let info = s.system_service.get_info();
+            JsonRpcResponse::success(None, serde_json::to_value(info).unwrap_or_default())
+        } else {
+            JsonRpcResponse::error(None, -32000, "no state")
+        }
+    }
+
+    async fn compositor_capabilities(&self) -> JsonRpcResponse {
+        if let Some(s) = self.get_state().await {
+            let caps = s.system_service.compositor().capabilities.clone();
+            JsonRpcResponse::success(None, serde_json::to_value(caps).unwrap_or_default())
+        } else {
+            JsonRpcResponse::error(None, -32000, "no state")
         }
     }
 }

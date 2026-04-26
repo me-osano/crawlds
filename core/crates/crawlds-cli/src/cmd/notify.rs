@@ -14,17 +14,17 @@ pub struct NotifyArgs {
 
 pub async fn run(client: CrawlClient, args: NotifyArgs, json: bool) -> Result<()> {
     if let Some(id) = args.dismiss {
-        client.delete(&format!("/notify/{id}")).await?;
+        client.cmd("NotifyDismiss", json!({ "id": id })).await?;
         output::print_ok(&format!("Dismissed notification {id}"));
     } else if args.title.is_some() || args.body.is_some() {
-        let res = client.post("/notify/send", json!({
+        let res = client.cmd("NotifySend", json!({
             "title": args.title.unwrap_or_default(),
             "body":  args.body.unwrap_or_default(),
             "urgency": args.urgency.unwrap_or_else(|| "normal".into()),
         })).await?;
         if json { output::print_value(&res, true); } else { output::print_ok("Notification sent"); }
     } else {
-        let res = client.get("/notify/list").await?;
+        let res = client.cmd("NotifyList", json!({})).await?;
         output::print_value(&res, json);
     }
     Ok(())

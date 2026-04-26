@@ -391,6 +391,64 @@ pub struct RssItem {
     pub thumbnail: Option<String>,
 }
 
+// ── Wallpaper ─────────────────────────────────────────────────────────────────
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum WallpaperBackend {
+    Swww,
+    Unknown,
+}
+
+impl Default for WallpaperBackend {
+    fn default() -> Self {
+        Self::Unknown
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct WallpaperMonitorState {
+    pub name: String,
+    pub current: Option<String>,
+    pub transition: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct WallpaperStatus {
+    pub backend: WallpaperBackend,
+    pub backend_available: bool,
+    pub monitors: Vec<WallpaperMonitorState>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct WallpaperSetOptions {
+    pub path: String,
+    #[serde(default)]
+    pub monitor: Option<String>,
+    #[serde(default)]
+    pub transition: Option<String>,
+}
+
+impl WallpaperSetOptions {
+    pub fn new(path: impl Into<String>) -> Self {
+        Self {
+            path: path.into(),
+            monitor: None,
+            transition: None,
+        }
+    }
+
+    pub fn with_monitor(mut self, monitor: impl Into<String>) -> Self {
+        self.monitor = Some(monitor.into());
+        self
+    }
+
+    pub fn with_transition(mut self, transition: impl Into<String>) -> Self {
+        self.transition = Some(transition.into());
+        self
+    }
+}
+
 // ── Wallhaven ────────────────────────────────────────────────────────────────
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -427,14 +485,11 @@ impl Default for ThemeSchemeType {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ThemeMetadata {
-    pub name: String,   // empty for dynamic, theme name for static
-    pub author: String, // unused for dynamic
-    #[serde(rename = "origin", default)]
-    pub origin: String, // "static" | "dynamic"
+    pub name: String,   // theme name for generic, wallpaper name for dynamic
+    #[serde(rename = "source", default)]
+    pub source: String, // "generic" | "dynamic"
     #[serde(default)]
-    pub scheme: String, // "" for static, "tonal-spot" etc for dynamic
-    #[serde(default)]
-    pub is_dark: bool,
+    pub scheme: String, // "static" for generic, "tonal-spot" etc for dynamic
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -482,23 +537,15 @@ pub struct TerminalColorSet {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ThemeVariant {
+pub struct ThemeMode {
     #[serde(flatten)]
     pub colors: ThemeColors,
     pub terminal: TerminalColors,
-    #[serde(default)]
-    pub scheme_type: ThemeSchemeType,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ThemeData {
     pub metadata: ThemeMetadata,
-    pub dark: ThemeVariant,
-    pub light: ThemeVariant,
-    #[serde(default = "default_schema_version")]
-    pub schema_version: u32,
-}
-
-const fn default_schema_version() -> u32 {
-    1
+    pub dark: ThemeMode,
+    pub light: ThemeMode,
 }

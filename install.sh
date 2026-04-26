@@ -54,7 +54,7 @@ trap cleanup EXIT
 install_deps() {
     if command -v pacman >/dev/null; then
         log_info "Installing dependencies..."
-        sudo pacman -S --needed --noconfirm rustup quickshell qt6ct qt6-multimedia imagemagick gum
+        sudo pacman -S --needed --noconfirm rustup quickshell qt6ct qt6-multimedia imagemagick gum swww
     else
         log_info "Install dependencies manually: git rust quickshell imagemagick"
     fi

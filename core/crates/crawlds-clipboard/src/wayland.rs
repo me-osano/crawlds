@@ -8,7 +8,7 @@ use fnv::FnvHasher;
 use std::collections::HashSet;
 use std::sync::Arc;
 use std::thread;
-use tracing::{debug, error, info, warn};
+use tracing::{debug, error, info};
 
 pub fn run_wayland_listener(
     history: Arc<std::sync::Mutex<HashSet<u64, fnv::FnvBuildHasher>>>,
@@ -43,7 +43,7 @@ fn run_event_driven(
 
     let mut stream = WlClipboardPasteStream::init(WlListenType::ListenOnCopy)?;
 
-    for context_result in stream.paste_stream().flatten() {
+    for _context_result in stream.paste_stream().flatten() {
         // Use wl-clipboard-rs to read the actual clipboard content
         // The wayland-clipboard-listener just signals when clipboard changes
         use wl_clipboard_rs::paste::{get_contents, ClipboardType, MimeType, Seat};

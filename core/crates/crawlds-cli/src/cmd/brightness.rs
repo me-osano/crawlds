@@ -24,17 +24,17 @@ pub struct BrightnessArgs {
 
 pub async fn run(client: CrawlClient, args: BrightnessArgs, json: bool) -> Result<()> {
     if let Some(val) = args.set {
-        let res = client.post("/brightness/set", json!({ "value": val })).await?;
+        let res = client.cmd("BrightnessSet", json!({ "value": val })).await?;
         if json { output::print_value(&res, true); } else { output::print_ok(&format!("Brightness set to {val}%")); }
     } else if let Some(val) = args.inc {
-        let res = client.post("/brightness/inc", json!({ "value": val })).await?;
+        let res = client.cmd("BrightnessInc", json!({ "value": val })).await?;
         if json { output::print_value(&res, true); } else { output::print_ok(&format!("Brightness increased by {val}%")); }
     } else if let Some(val) = args.dec {
-        let res = client.post("/brightness/dec", json!({ "value": val })).await?;
+        let res = client.cmd("BrightnessDec", json!({ "value": val })).await?;
         if json { output::print_value(&res, true); } else { output::print_ok(&format!("Brightness decreased by {val}%")); }
     } else {
         // default: get
-        let res = client.get("/brightness").await?;
+        let res = client.cmd("BrightnessGet", json!({})).await?;
         if json {
             output::print_value(&res, true);
         } else {

@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use std::{
     collections::HashMap,
     env,
@@ -12,7 +14,7 @@ use std::{
 };
 
 use anyhow::Result;
-use clap::Parser;
+use clap::{Parser, Subcommand};
 use nix::{
     sys::signal::{self, Signal},
     unistd::Pid,
@@ -660,19 +662,61 @@ pub fn get_shell_ipc_completions(args: &[String]) -> Vec<String> {
     }
 }
 
-pub fn run_shell_ipc_command(args: &[String]) {
-    if args.is_empty() {
-        print_ipc_help();
-        return;
-    }
+pub async fn run_ipc(args: IpcArgs) -> anyhow::Result<()> {
+    match args.action {
+        None => {
+            print_ipc_help();
+            Ok(())
+        }
+        Some(IpcAction::Call { target, function, args }) => {
+            run_shell_ipc_command_internal(&target, &function, &args);
+            Ok(())
+        }
+        Some(IpcAction::Daemon { method, params, silent }) => {
+            let socket_path = std::env::var("CRAWLDS_SOCKET").unwrap_or_else(|_| {
+                let uid = unsafe { libc::getuid() };
+                let runtime_dir = std::env::var("XDG_RUNTIME_DIR")
+                    .unwrap_or_else(|_| format!("/run/user/{}", uid));
+                format!("{runtime_dir}/crawlds.sock")
+            });
 
-    let mut ipc_args: Vec<String> = if args[0] != "call" {
-        let mut v = vec!["call".to_owned()];
-        v.extend_from_slice(args);
-        v
-    } else {
-        args.to_vec()
-    };
+            let client = crate::client::CrawlClient::new(&socket_path);
+            let mut param_map = serde_json::Map::new();
+            for p in params {
+                if let Some((k, v)) = p.split_once('=') {
+                    param_map.insert(k.to_string(), parse_param_value(v)?);
+                }
+            }
+            let result = client.cmd(&method, serde_json::Value::Object(param_map)).await?;
+            if !silent {
+                println!("{}", serde_json::to_string_pretty(&result).unwrap_or_default());
+            }
+            Ok(())
+        }
+    }
+}
+
+fn parse_param_value(s: &str) -> anyhow::Result<serde_json::Value> {
+    if let Ok(n) = s.parse::<i64>() {
+        return Ok(serde_json::Value::Number(n.into()));
+    }
+    if let Ok(n) = s.parse::<f64>() {
+        if let Some(num) = serde_json::Number::from_f64(n) {
+            return Ok(serde_json::Value::Number(num));
+        }
+    }
+    if s == "true" { return Ok(serde_json::Value::Bool(true)); }
+    if s == "false" { return Ok(serde_json::Value::Bool(false)); }
+    if s == "null" { return Ok(serde_json::Value::Null); }
+    if let Ok(v) = serde_json::from_str(s) {
+        return Ok(v);
+    }
+    Ok(serde_json::Value::String(s.to_string()))
+}
+
+pub fn run_shell_ipc_command_internal(target: &str, function: &str, args: &[String]) {
+    let mut ipc_args = vec!["call".to_owned(), target.to_owned(), function.to_owned()];
+    ipc_args.extend_from_slice(args);
 
     let mut cmd_args = vec!["ipc".to_owned()];
 
@@ -877,7 +921,7 @@ pub async fn shell_main(command: ShellCommand) -> Result<()> {
             Ok(())
         }
         ShellCommand::Ipc(args) => {
-            run_shell_ipc_command(&args.args);
+            run_ipc(args).await?;
             Ok(())
         }
         ShellCommand::Update(args) => update(args).await,
@@ -897,8 +941,33 @@ pub enum ShellCommand {
 
 #[derive(Parser)]
 pub struct IpcArgs {
-    #[arg(last = true)]
-    pub args: Vec<String>,
+    #[command(subcommand)]
+    pub action: Option<IpcAction>,
+}
+
+#[derive(Subcommand)]
+pub enum IpcAction {
+    /// Call a Quickshell IPC target function
+    Call {
+        /// The IPC target name
+        target: String,
+        /// The function name
+        function: String,
+        /// Optional function arguments
+        #[arg(last = true)]
+        args: Vec<String>,
+    },
+    /// Call a daemon JSON-RPC method directly
+    Daemon {
+        /// The JSON-RPC method name
+        method: String,
+        /// Named parameters (KEY=VALUE)
+        #[arg(short = 'p', long = "param")]
+        params: Vec<String>,
+        /// Skip printing output
+        #[arg(short = 's')]
+        silent: bool,
+    },
 }
 
 #[derive(Parser)]

@@ -12,13 +12,13 @@ pub struct ClipArgs {
 
 pub async fn run(client: CrawlClient, args: ClipArgs, json: bool) -> Result<()> {
     if let Some(text) = args.set {
-        client.post("/clipboard", json!({ "content": text })).await?;
+        client.cmd("ClipSet", json!({ "content": text })).await?;
         output::print_ok("Clipboard updated");
     } else if args.history {
-        let res = client.get("/clipboard/history").await?;
+        let res = client.cmd("ClipHistory", json!({})).await?;
         output::print_value(&res, json);
     } else {
-        let res = client.get("/clipboard").await?;
+        let res = client.cmd("ClipGet", json!({})).await?;
         if json { output::print_value(&res, true); }
         else { println!("{}", res["content"].as_str().unwrap_or("")); }
     }

@@ -1,6 +1,6 @@
-# Theme System (v0.2)
+# Theme System (v0.3)
 
-CrawlDS uses a Rust-backed theme system that loads TOML theme files and serves them to Quickshell via IPC/SSE for real-time theme switching. It also supports dynamic theming using matugen to generate colors from wallpapers. Template rendering is handled entirely in QML with no Python dependencies.
+CrawlDS uses a Rust-backed theme system that generates Material Design 3 themes using HCT color space. Both static themes (TOML) and dynamic themes (wallpaper-based) are supported via the crawlds-theme crate. Template rendering is handled in Rust with support for dual-mode (dark/light) templates.
 
 ## Architecture
 
@@ -10,7 +10,10 @@ CrawlDS uses a Rust-backed theme system that loads TOML theme files and serves t
 ├─────────────────────────────────────────────────────────────────────┤
 │  crawlds-theme crate                                                │
 │  ├── Static themes: TOML from assets/themes/                      │
-│  ├── Dynamic themes: matugen CLI integration                       │
+│  ├── Dynamic themes: HCT color space (native Rust)                 │
+│  │   ├── Color quantization (Wu + WSMeans)                        │
+│  │   ├── Scheme generation (8 types)                           │
+│  │   └── Template rendering                                      │
 │  ├── ThemeManager - manages theme cache and current              │
 │  └── HTTP endpoints for theme operations                           │
 │         │                                                           │
@@ -23,21 +26,66 @@ CrawlDS uses a Rust-backed theme system that loads TOML theme files and serves t
 │                       Quickshell QML                                │
 ├─────────────────────────────────────────────────────────────────────┤
 │  ThemeService (singleton)                                          │
-│  ├── themesList - available theme names                             │
-│  ├── currentTheme - currently active theme                         │
-│  ├── setTheme(name, variant)                                   │
-│  ├── generate() - decides wallpaper vs static                    │
-│  └── generateFromWallpaper() - dynamic theming                   │
-│         │                                                           │
-│         ▼ loads color map                                          │
-│  TemplateService                                                │
-│  ├── colorMapCache - {{primary}} substitution                 │
-│  ├── terminalMapCache - terminal colors                       │
-│  └── substitute(content) - renders templates                 │
-│         │                                                           │
-│         ▼ writes                                                 │
-│  TemplateRegistry - app/terminal configs                       │
-│  └── applies to: GTK, Qt, KDE, foot, ghostty, etc.             │
+│  ├── themesList - available theme names                           │
+│  ├── currentTheme - currently active theme                    │
+│  ├── setTheme(name, variant)                                    │
+│  ├── generate() - decides wallpaper vs static                 │
+│  └── generateFromWallpaper() - dynamic theming                │
+│         │                                                       │
+│         ▼ loads                                                 │
+│  TemplateService                                               │
+│  └── applies to: GTK, Qt, KDE, foot, ghostty, etc.            │
+│         │                                                       │
+│         ▼ binds to                                               │
+│  Color.qml (singleton) ──theme colors as QML properties       │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### HCT-Based Dynamic Theming
+
+```
+Wallpaper changed
+    │
+    ▼
+ThemeService.generate()
+    │ (checks useWallpaperColors setting)
+    ├─ true: generateFromWallpaper()
+    │                    │
+    │                    ▼ extract colors
+    │              Color Quantization (Wu/WSMeans)
+    │                    │
+    │                    ▼ generate M3 scheme
+    │              HCT Color Space (8 schemes)
+    │                    │
+    │                    ▼
+    │              ThemeData (dark + light)
+    │                    │
+    └────────────────────┼──────SSE──> ThemeService
+                         │              │
+                         ▼               ▼
+                   ColorMap loaded  TemplateService.substitute()
+                         │              │
+                         └──────────────┼──> Rendered templates
+                                        ▼
+                                   UI updates
+```
+
+## Scheme Types
+
+The crawlds-theme crate supports 8 Material Design 3 scheme types:
+
+| Scheme | Description |
+|--------|-------------|
+| `tonal-spot` | Default Android 12+ scheme |
+| `rainbow` | Rainbow hue rotation |
+| `content` | Content-based from source image |
+| `monochrome` | Monochrome tones |
+| `fruit-salad` | -50° hue rotation |
+| `vibrant` | Maximum chroma |
+| `faithful` | Area-weighted tones |
+| `muted` | Low saturation |
+
+## Theme File Format (TOML)
 │         │                                                           │
 │         ▼ binds to                                               │
 │  Color.qml (singleton) ──theme colors as QML properties         │
@@ -54,14 +102,14 @@ ThemeService.generate()
     │ (checks useWallpaperColors setting)
     ├─ true: generateFromWallpaper()
     │                    │
-    │                    ▼ (HTTP POST)
-    │              daemon /theme/dynamic/generate
+    │                    ▼ extract colors
+    │              Color Quantization (Wu/WSMeans)
     │                    │
-    │                    ▼ (calls matugen CLI)
-    │              matugen image <wallpaper>
+    │                    ▼ generate M3 scheme
+    │              HCT Color Space (8 schemes)
     │                    │
     │                    ▼
-    │              ThemeData (validated)
+    │              ThemeData (dark + light)
     │                    │
     └────────────────────┼──────SSE──> ThemeService
                          │              │
@@ -236,7 +284,7 @@ Set the active theme.
 
 #### POST /theme/dynamic/generate
 
-Generate a dynamic theme from a wallpaper image using matugen.
+Generate a dynamic theme from a wallpaper image.
 
 **Request:**
 ```json
@@ -244,7 +292,8 @@ Generate a dynamic theme from a wallpaper image using matugen.
   "wallpaper_path": "/path/to/wallpaper.jpg",
   "variant": "dark",           // "dark" or "light"
   "color_index": 0,             // which extracted color to use (0-3)
-  "theme_name": "Dynamic"       // optional name for the theme
+  "theme_name": "Dynamic",       // optional name for the theme
+  "scheme": "tonal-spot"        // optional: scheme type (default: tonal-spot)
 }
 ```
 
@@ -258,17 +307,16 @@ Generate a dynamic theme from a wallpaper image using matugen.
 }
 ```
 
-**Requirements:** matugen CLI must be installed and available in PATH.
-
 #### POST /theme/dynamic/from_color
 
-Generate a dynamic theme from a hex color using matugen.
+Generate a dynamic theme from a hex color.
 
 **Request:**
 ```json
 {
   "color": "#6200ee",
   "variant": "dark",
+  "scheme": "vibrant",
   "name": "Dynamic-Custom"
 }
 ```
@@ -326,7 +374,6 @@ Theme events are broadcast over the `/events` SSE endpoint:
 - `cacheReady` - Whether all themes are preloaded
 - `dynamicTheme` - Currently active dynamic theme (from wallpaper)
 - `hasDynamic` - Whether a dynamic theme is active
-- `dynamicAvailable` - Whether matugen is available
 
 **Methods:**
 - `init()` - Initialize and load themes
@@ -370,6 +417,10 @@ Rectangle {
 - Terminal colors: `terminalBlack`, `terminalRed`, etc.
 - `terminalForeground`, `terminalBackground`, etc.
 - `isDark`, `variant`
+- `dynamicTheme` - Currently active dynamic theme (from wallpaper)
+- `hasDynamic` - Whether a dynamic theme is active
+
+**Note:** Dynamic theming uses native HCT color space (no external dependencies).
 
 ### Style
 
@@ -430,35 +481,68 @@ Defines available template configurations:
 - `terminals` - Array of terminal configs (foot, ghostty, kitty, alacritty, wezterm)
 - `applications` - Array of app configs (GTK, Qt, KDE, Discord, VSCode, Zed, etc.)
 
-## Matugen Integration
+## HCT Color Space
 
-### Installation
+The theme system uses native HCT (Hue-Chroma-Tone) color space implementation:
 
-Install matugen CLI:
+### Components
 
-```bash
-# Via cargo
-cargo install matugen
+1. **HCT** - Color space conversion (RGB <-> HCT <-> LAB)
+2. **TonalPalette** - Generates tone-based palettes
+3. **Color Quantization** - Extracts dominant colors from images
+   - Wu's quantization algorithm
+   - Weighted Spatial K-Means (WSMeans)
+4. **Scheme Generation** - Creates M3 color schemes
+   - 8 scheme types (tonal-spot, rainbow, content, monochrome, fruit-salad, vibrant, faithful, muted)
 
-# Or via package manager (if available)
-# Arch: pacman -S matugen
+### Crate API
+
+```rust
+use crawlds_theme::{ThemeGenerator, GeneratorConfig, SchemeType};
+
+// Generate from color
+let generator = ThemeGenerator::new(GeneratorConfig {
+    scheme_type: SchemeType::TonalSpot,
+    color_index: 0,
+});
+let theme = generator.generate_from_color("#4285f4");
+let theme_data = theme.to_theme_data("My Theme", "wallpaper.png");
+
+// Generate from image
+let theme = generator.generate_from_image_pixels(&pixels);
 ```
 
-### How It Works
+### Template Rendering
 
-1. matugen extracts dominant colors from the wallpaper using `material-color-utilities` library
-2. Applies Material Design 3 (Material You) color scheme generation
-3. Outputs JSON with full color palette for dark/light/amoled variants
-4. crawlds-theme parses this and converts to `ThemeData` format
-5. Terminal colors are auto-generated from the primary color
+```rust
+use crawlds_theme::{render_template, render_template_dual_mode, SchemeTonalSpot};
 
-### Color Index
+let scheme = SchemeTonalSpot::new(220.0);
+let colors = scheme.get_light();
 
-The `--source-color-index` flag (default: 0) controls which extracted color to use:
-- 0 - Primary dominant color
-- 1 - Secondary color
-- 2 - Tertiary color
-- 3 - Quaternary color
+// Single mode
+let output = render_template(template_content, &colors);
+
+// Dual mode (dark + light)
+let dark = scheme.get_dark();
+let light = scheme.get_light();
+let output = render_template_dual_mode(template_content, &dark, &light);
+```
+
+### Scheme Types
+
+The `scheme` parameter in dynamic theme requests:
+
+| Scheme | Usage |
+|--------|-------|
+| `tonal-spot` | Default Android 12+ look |
+| `rainbow` | Full hue spectrum |
+| `content` | Based on source image colors |
+| `monochrome` | Grayscale |
+| `fruit-salad` | Warm, saturated |
+| `vibrant` | High contrast |
+| `faithful` | Natural tones |
+| `muted` | Subtle, desaturated |
 
 ## IPC Integration
 
@@ -484,7 +568,7 @@ The old `ColorSchemeService` used JSON files in `ColorScheme/` directory and wro
 2. **Rust-backed** for validation and consistency
 3. **SSE-based** for real-time updates
 4. **Preloaded cache** for instant theme switching
-5. **Dynamic theming** via matugen for wallpaper-based colors
+5. **Dynamic theming** via native HCT (no external dependencies)
 
 
 
@@ -517,17 +601,20 @@ In settings, enable wallpaper-based colors:
 
 ```
 crawlds-theme/src/
-├── lib.rs           # Main exports
-├── error.rs         # ThemeError, ThemeResult
-├── types.rs         # Re-exports from crawlds-ipc
-├── static/
-│   ├── mod.rs
-│   ├── loader.rs    # TOML loading + validation
-│   └── manager.rs   # ThemeManager
+├── lib.rs           # Main exports, conversion functions
+├── config.rs         # ThemeConfig, TemplateConfig
+├── manager.rs        # ThemeManager
+├── template/
+│   └── mod.rs      # TemplateRenderer, DualModeTemplateRenderer
+├── generic/
+│   └── loader.rs   # TOML loading
 └── dynamic/
     ├── mod.rs
-    ├── matugen.rs   # matugen CLI wrapper
-    └── generator.rs # ThemeData generation
+    ├── generator/  # ThemeGenerator, SchemeType
+    ├── hct/       # HCT color space
+    ├── quantizer/  # Wu + WSMeans quantization
+    ├── scheme/     # 8 M3 scheme implementations
+    └── terminal/   # Terminal config generators
 ```
 
 ## File Structure
@@ -536,11 +623,12 @@ crawlds-theme/src/
 crawlds/
 ├── core/
 │   ├──crates/
-│   │   ├── crawlds-theme/       # Theme loading crate
-│   │   └── src/
-│   │   │       ├── lib.rs       # Main exports
-│   │   │       ├── static/      # Static theme handling
-│   │   │       └── dynamic/     # Dynamic theme (matugen)
+│   │   ├── crawlds-theme/       # Theme generation crate
+│   │   │   └── src/
+│   │   │       ├── lib.rs         # Main exports
+│   │   │       ├── template/     # Template rendering
+│   │   │       ├── generic/     # Static theme handling
+│   │   │       └── dynamic/     # Dynamic theme (HCT)
 │   │   ├── crawlds-ipc/        # Shared types
 │   │   │   └── src/
 │   │   │       ├── types.rs    # ThemeData, ThemeColors
@@ -548,9 +636,13 @@ crawlds/
 │   │   └── crawlds-daemon/     # HTTP endpoints
 │   │       └── src/router.rs   # /theme/* handlers
 │   └── assets/
-│       └── themes/
-│           ├── Nord.toml
-│           ├── Dracula.toml
+│       ├── themes/            # TOML themes
+│       │   ├── Nord.toml
+│       │   ├── Dracula.toml
+│       │   └── ...
+│       └── templates/          # Theme templates
+│           ├── kitty.conf
+│           ├── gtk3.css
 │           └── ...
 ├── quickshell/
 │   └── Services/
@@ -566,26 +658,37 @@ crawlds/
 
 ## Roadmap
 
-### Completed (v0.2)
+### Completed (v0.3)
 
 - [x] Rust-backed theme system with TOML themes
 - [x] ThemeService with cache for fast startup
-- [x] Dynamic theming via matugen
+- [x] HCT color space (native Rust implementation)
+- [x] Color quantization (Wu + WSMeans algorithms)
+- [x] 8 scheme types (tonal-spot, rainbow, content, monochrome, fruit-salad, vibrant, faithful, muted)
+- [x] Template rendering in Rust (DualModeTemplateRenderer)
 - [x] TemplateService - pure QML template rendering (no Python)
 - [x] Eliminated template-processor.py
 - [x] Eliminated AppThemeService (merged into ThemeService)
-- [x] Terminal theme generation (foot, ghostty, kitty, alacritty, wezterm)
-- [x] Application templates (GTK, Qt, KDE, Discord, VSCode, Zed, etc.)
+- [x] Terminal theme generation (foot, ghostty, kitty, alacritty, wezterm, etc.)
+- [x] Application templates (GTK, Qt, KDE, VSCode, Zed, helix, yazi, walker, etc.)
 - [x] Theme list via ThemeService (migrated from ColorSchemeService)
+- [x] Consistent JSON output (ThemeData) for both generic and dynamic theming
+- [x] Dual-mode template support (dark/light in single template file)
 
 ### In Progress
 
 - [ ] Full color palette support (expand from 16 to 48 colors)
 - [ ] User template customization UI in settings
 - [ ] Theme preview in settings
+- [ ] Template file loading from core/assets/templates
 
 ### Planned
 
+- [ ] Theme adapter abstraction (trait-based, swap Matugen/native/other engines)
+- [ ] Explicit `PaletteGenerator` trait for custom palette generation
+- [ ] ANSI mapper separation (extract terminal mapping to `mappers/` module)
+- [ ] Contrast correction helper (`ensure_contrast()` for accessibility)
+- [ ] Formalized IPC events (ThemeEvent enum beyond ThemeData)
 - [ ] Theme editor (create custom themes)
 - [ ] Import/export themes
 - [ ] Theme gallery with online themes
@@ -593,11 +696,42 @@ crawlds/
 - [ ] Per-application color overrides
 - [ ] Color blindness accessibility modes
 - [ ] Theme presets for specific apps (gaming, coding, media)
-- [ ] Wallpaper color extraction (native Rust, remove Python dependency)
+
+# Architecture (Target)
+
+```
+crawlds-theme/
+├── core/          # Pure logic (HCT, color math, tone selection)
+├── adapters/     # Theme sources (Matugen, native, manual)
+├── mappers/      # Material → terminal/UI role mapping
+├── templates/    # Output generators (kitty, gtk, quickshell, etc.)
+├── apply/        # Write configs + reload apps
+└── ipc/         # Integration with crawlds-daemon
+```
+
+### Planned Crate Breakdown
+
+| Module | Purpose |
+|--------|---------|
+| `core/` | Theme struct, Color types, HCT, tonal palettes |
+| `adapters/` | `ThemeAdapter` trait, implementations |
+| `mappers/` | ANSI mapping, contrast correction, Quickshell roles |
+| `templates/` | Template generators using handlebars/tera |
+| `apply/` | File writing, app reload signals |
+| `ipc/` | Unix socket protocol, events |
+
+### Target Data Flow
+
+```
+Wallpaper → Adapter → core → Mapper → Templates → Apply
+                          ↓
+                      Quickshell (via IPC)
+```
 
 ### Deprecated
 
 - `template-processor.py` - replaced by TemplateService (QML)
 - `AppThemeService.qml` - merged into ThemeService
 - `ColorSchemeService` - legacy, superseded by ThemeService
+- `matugen` - optional, native HCT preferred
 ```

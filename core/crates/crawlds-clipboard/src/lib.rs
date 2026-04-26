@@ -108,6 +108,7 @@ pub async fn run_with_scheduler(
     Ok(())
 }
 
+#[allow(dead_code)]
 fn compute_hash(data: &[u8]) -> u64 {
     let mut hasher = FnvHasher::default();
     use std::hash::Hasher;
